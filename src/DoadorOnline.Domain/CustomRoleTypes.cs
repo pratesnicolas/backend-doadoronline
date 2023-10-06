@@ -1,0 +1,8 @@
+﻿namespace DoadorOnline.Domain;
+
+public static class CustomRoleTypes
+{
+    public const string Hospital = nameof(Hospital);
+    public const string Donator = nameof(Donator);
+    public const string Donee = nameof(Donee); 
+}
