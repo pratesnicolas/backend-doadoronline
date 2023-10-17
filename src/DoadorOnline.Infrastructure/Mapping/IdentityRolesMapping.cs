@@ -34,6 +34,7 @@ public class IdentityRolesMapping : IEntityTypeConfiguration<IdentityRole>
             Id = CustomRoleTypes.Donee
         };
 
+
         builder.HasData(roleHospital,
                         roleDonee,
                         roleDonator);

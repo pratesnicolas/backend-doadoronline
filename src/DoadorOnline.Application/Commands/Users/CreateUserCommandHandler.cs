@@ -23,11 +23,39 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
         var user = User.Factory.NewUser(request.Name,
                                         request.Gender,
                                         request.Cpf,
-                                        request.Cnpj,
-                                        request.BloodType);
-      
-        await _identityRepository.CreateUserAsync(user);
+                                        request.PhoneNumber,
+                                        request.BirthDate,
+                                        UserType.Hospital,
+                                        request.Email);
 
-        return user.ValidationResult;
+        user.CreateNewPassword(request.Password);
+
+        await _identityRepository.CreateUserAsync(user);
+        
+        if(!user.ValidationResult.IsValid)
+        {
+            return user.ValidationResult;
+        }
+
+        var newAddress = Address.Factory.NewAddress(user.Id.ToString(),
+                                                    request.Address.Street,
+                                                    request.Address.District,
+                                                    request.Address.Number,
+                                                    request.Address.Country,
+                                                    request.Address.City,
+                                                    request.Address.State,
+                                                    request.Address.ZipCode);
+
+        var newDonator = Donator.Factory.NewDonator(user.Id,request.BloodType);
+
+        user.AddDonator(newDonator);
+        user.ChangeAddress(newAddress);
+
+        await _identityRepository.AddDonator(newDonator);
+        await _identityRepository.AddAddress(newAddress);
+
+        await _identityRepository.SaveChanges();
+
+        return request.ValidationResult;
     }
 } 

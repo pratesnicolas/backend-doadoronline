@@ -21,14 +21,28 @@ public class IdentityRepository : IIdentityRepository
 
     public async Task CreateUserAsync(User user)
     {
-        await _userManager.CreateAsync(user);
-        await _userManager.AddToRoleAsync(user, CustomRoleTypes.Donator);
+        user.Validate(await _userManager.CreateAsync(user));
 
+        if (!user.ValidationResult.IsValid)
+            return;
+
+        await _userManager.AddToRoleAsync(user, user.UserType.ToString());
     }
+
+    public async Task AddDonator(Donator donator)
+      => await _context.Donator.AddAsync(donator);
+
+    public async Task AddAddress(Address address)
+     => await _context.Address.AddAsync(address);
 
     public async void ChangePassword(User user)
     {
 
+    }
+
+    public async Task SaveChanges()
+    {
+        await _context.SaveChangesAsync();
     }
 
 }

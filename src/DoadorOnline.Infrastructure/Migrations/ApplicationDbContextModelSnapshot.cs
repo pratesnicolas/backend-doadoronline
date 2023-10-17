@@ -22,6 +22,125 @@ namespace DoadorOnline.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DoadorOnline.Domain.Address", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Country")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("District")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Number")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("State")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Street")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("UserId")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("UserId1")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("ZipCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1")
+                        .IsUnique()
+                        .HasFilter("[UserId1] IS NOT NULL");
+
+                    b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("DoadorOnline.Domain.Donation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DonationType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IpAdress")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("UserId")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("UserId1")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1")
+                        .IsUnique()
+                        .HasFilter("[UserId1] IS NOT NULL");
+
+                    b.ToTable("Donation");
+                });
+
+            modelBuilder.Entity("DoadorOnline.Domain.Donator", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("BloodType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("UserId1")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1")
+                        .IsUnique()
+                        .HasFilter("[UserId1] IS NOT NULL");
+
+                    b.ToTable("Donator");
+                });
+
             modelBuilder.Entity("DoadorOnline.Domain.User", b =>
                 {
                     b.Property<string>("Id")
@@ -31,19 +150,11 @@ namespace DoadorOnline.Infrastructure.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Adress")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("BloodType")
                         .HasColumnType("int");
-
-                    b.Property<string>("Cnpj")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -107,6 +218,9 @@ namespace DoadorOnline.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<int>("UserType")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -151,8 +265,22 @@ namespace DoadorOnline.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
+                            Id = "Hospital",
+                            ConcurrencyStamp = "a58fee3f-5636-45ee-a4f0-bfd028677959",
+                            Name = "Hospital",
+                            NormalizedName = "Hospital"
+                        },
+                        new
+                        {
+                            Id = "Donee",
+                            ConcurrencyStamp = "b259c26f-1595-4670-b37e-d5f470283fe7",
+                            Name = "Donee",
+                            NormalizedName = "Donee"
+                        },
+                        new
+                        {
                             Id = "Donator",
-                            ConcurrencyStamp = "a0bfdbba-aaf8-417b-be6c-a498196d602d",
+                            ConcurrencyStamp = "f758400e-063c-471a-aace-db8d8d9732ae",
                             Name = "Donator",
                             NormalizedName = "Donator"
                         });
@@ -280,6 +408,45 @@ namespace DoadorOnline.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("DoadorOnline.Domain.Address", b =>
+                {
+                    b.HasOne("DoadorOnline.Domain.User", "User")
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserId");
+
+                    b.HasOne("DoadorOnline.Domain.User", null)
+                        .WithOne("Address")
+                        .HasForeignKey("DoadorOnline.Domain.Address", "UserId1");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DoadorOnline.Domain.Donation", b =>
+                {
+                    b.HasOne("DoadorOnline.Domain.User", "User")
+                        .WithMany("Donations")
+                        .HasForeignKey("UserId");
+
+                    b.HasOne("DoadorOnline.Domain.User", null)
+                        .WithOne("Donation")
+                        .HasForeignKey("DoadorOnline.Domain.Donation", "UserId1");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DoadorOnline.Domain.Donator", b =>
+                {
+                    b.HasOne("DoadorOnline.Domain.User", "User")
+                        .WithMany("Donators")
+                        .HasForeignKey("UserId");
+
+                    b.HasOne("DoadorOnline.Domain.User", null)
+                        .WithOne("Donator")
+                        .HasForeignKey("DoadorOnline.Domain.Donator", "UserId1");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -329,6 +496,21 @@ namespace DoadorOnline.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DoadorOnline.Domain.User", b =>
+                {
+                    b.Navigation("Address");
+
+                    b.Navigation("Addresses");
+
+                    b.Navigation("Donation");
+
+                    b.Navigation("Donations");
+
+                    b.Navigation("Donator");
+
+                    b.Navigation("Donators");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,12 +3,15 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace DoadorOnline.Infrastructure;
 public sealed class ApplicationDbContext : IdentityDbContext<User>
 {
     private readonly IConfiguration _configuration;
+
+    public DbSet<Donator> Donator { get; set; }
+    public DbSet<Donation> Donation { get; set; }
+    public DbSet<Address> Address { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
        : base(options)
