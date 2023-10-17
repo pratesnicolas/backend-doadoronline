@@ -7,10 +7,12 @@ namespace DoadorOnline.Application;
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, ValidationResult>
 {
     private readonly IIdentityRepository _identityRepository;
+    private readonly IEmailService _emailService;
 
-    public CreateUserCommandHandler(IIdentityRepository identityRepository)
+    public CreateUserCommandHandler(IIdentityRepository identityRepository, IEmailService emailService)
     {
         _identityRepository = identityRepository;
+        _emailService = emailService;
     }
 
     public async Task<ValidationResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -34,7 +36,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
         
         if(!user.ValidationResult.IsValid)
         {
-            return user.ValidationResult;
+            throw new Exception(user.ValidationResult.Errors[0].ToString()); 
         }
 
         var newAddress = Address.Factory.NewAddress(user.Id.ToString(),
@@ -53,6 +55,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
 
         await _identityRepository.AddDonator(newDonator);
         await _identityRepository.AddAddress(newAddress);
+
+        //_emailService.SendEmail();
 
         await _identityRepository.SaveChanges();
 

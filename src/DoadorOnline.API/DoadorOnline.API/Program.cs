@@ -3,13 +3,17 @@ using DoadorOnline.Application;
 var builder = WebApplication.CreateBuilder(args);
 
 
+
+
+
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterServices();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjectionConfig).Assembly));
-//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateUserCommandHandler).Assembly));
+
 
 var app = builder.Build();
 
@@ -20,6 +24,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(builder => builder.AllowAnyHeader().
+                               AllowAnyHeader().
+                               AllowAnyOrigin());
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

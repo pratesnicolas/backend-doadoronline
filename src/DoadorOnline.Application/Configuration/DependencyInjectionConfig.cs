@@ -14,6 +14,8 @@ public static class DependencyInjectionConfig
         services.AddIdentityCore<User>()
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+        services.RegisterInfraServices();
                     
         return services;
     }
