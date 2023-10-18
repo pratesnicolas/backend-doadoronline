@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\DoadorOnline.Application\DoadorOnline.Application.csproj" />
+    <ProjectReference Include="..\..\DoadorOnline.BrasilApi.Service\DoadorOnline.BrasilApiService.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,8 @@
-﻿using DoadorOnline.Domain;
+﻿using DoadorOnline.BrasilApiService;
+using DoadorOnline.Domain;
 using DoadorOnline.Infrastructure;
 using Microsoft.AspNetCore.Identity;
-
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DoadorOnline.Application;
@@ -16,7 +17,7 @@ public static class DependencyInjectionConfig
                     .AddEntityFrameworkStores<ApplicationDbContext>();
 
         services.RegisterInfraServices();
-                    
+
         return services;
     }
 }
