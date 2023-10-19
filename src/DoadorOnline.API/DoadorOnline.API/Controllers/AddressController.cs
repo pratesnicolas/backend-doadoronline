@@ -11,7 +11,7 @@ namespace DoadorOnline.API.Controllers
         private readonly IBrasilApiService _brasilApiService;
 
         public AddressController(IMediator mediator,
-                              IBrasilApiService brasilApiService)
+                                 IBrasilApiService brasilApiService)
         {
             _mediator = mediator;
             _brasilApiService = brasilApiService;
@@ -23,7 +23,7 @@ namespace DoadorOnline.API.Controllers
             var address = await this._brasilApiService.GetAddressByCep(cep);
             if (!address.IsSuccess)
             {
-                return Problem(address.Message);
+                return Problem(address.message);
             }
             return Ok(address);
         }

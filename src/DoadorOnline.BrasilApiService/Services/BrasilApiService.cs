@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace DoadorOnline.BrasilApiService;
 
@@ -6,10 +7,10 @@ public class BrasilApiService : IBrasilApiService
 {
     private readonly HttpClient _httpClient;
 
-    public BrasilApiService(HttpClient httpClient, BrasilApiSettings settings)
+    public BrasilApiService(HttpClient httpClient, IOptions<BrasilApiSettings> settings)
     {
         _httpClient = httpClient;
-        _httpClient.BaseAddress = new Uri(settings.BaseUrl);
+        _httpClient.BaseAddress = new Uri(settings.Value.BaseUrl);
     }
 
     public async Task<CepResponseDTO> GetAddressByCep(int cep)

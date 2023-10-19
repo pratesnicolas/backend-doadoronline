@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoadorOnline.Application", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{15432D82-D0FC-4A6B-823F-B290DB61DB83}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoadorOnline.BrasilApiService", "DoadorOnline.BrasilApiService\DoadorOnline.BrasilApiService.csproj", "{F5D4415B-C518-4191-8CEF-7357B83280CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{F083E4A1-4393-4D57-8138-3FE03D9B949C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F083E4A1-4393-4D57-8138-3FE03D9B949C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F083E4A1-4393-4D57-8138-3FE03D9B949C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5D4415B-C518-4191-8CEF-7357B83280CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5D4415B-C518-4191-8CEF-7357B83280CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5D4415B-C518-4191-8CEF-7357B83280CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5D4415B-C518-4191-8CEF-7357B83280CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +50,7 @@ Global
 		{E776644B-837D-4C11-B370-4C086A06D21B} = {15432D82-D0FC-4A6B-823F-B290DB61DB83}
 		{34023E08-C596-4698-A867-EF2B5E0466D1} = {15432D82-D0FC-4A6B-823F-B290DB61DB83}
 		{F083E4A1-4393-4D57-8138-3FE03D9B949C} = {15432D82-D0FC-4A6B-823F-B290DB61DB83}
+		{F5D4415B-C518-4191-8CEF-7357B83280CE} = {15432D82-D0FC-4A6B-823F-B290DB61DB83}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2F79BD5C-EDF2-4F2D-BE17-59F380009121}

@@ -8,7 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace DoadorOnline.Application;
 public static class DependencyInjectionConfig
 {
-    public static IServiceCollection RegisterServices(this IServiceCollection services)
+    public static IServiceCollection RegisterServices(this IServiceCollection services,
+                                                      IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>();
         services.AddScoped<IIdentityRepository, IdentityRepository>();
@@ -17,6 +18,7 @@ public static class DependencyInjectionConfig
                     .AddEntityFrameworkStores<ApplicationDbContext>();
 
         services.RegisterInfraServices();
+        services.RegisterBrasilApiServices(configuration);
 
         return services;
     }

@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DoadorOnline.BrasilApi.Service\DoadorOnline.BrasilApiService.csproj" />
+    <ProjectReference Include="..\DoadorOnline.BrasilApiService\DoadorOnline.BrasilApiService.csproj" />
     <ProjectReference Include="..\DoadorOnline.Infrastructure\DoadorOnline.Infrastructure.csproj" />
   </ItemGroup>
 
