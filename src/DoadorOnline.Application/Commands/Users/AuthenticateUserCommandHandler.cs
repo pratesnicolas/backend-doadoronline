@@ -19,7 +19,7 @@ public class AuthenticateUserCommandHandler : IRequestHandler<AuthenticateUserCo
         if (!request.IsValid())
             return request.ValidationResult;
 
-        var user = await _identityRepository.GetUserAsync(request.UserName);
+        var user = await _identityRepository.GetUserAsync(request.Email);
 
         if (user is null)
             throw new Exception("User not found.");

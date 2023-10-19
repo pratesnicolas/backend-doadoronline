@@ -42,7 +42,7 @@ public class UserController : ControllerBase
         if (!message.IsValid)
             return BadRequest();
 
-        var jwt = await _tokenService.GenerateToken(command.UserName);
+        var jwt = await _tokenService.GenerateToken(command.Email);
         return Ok(jwt);
     }
 }
