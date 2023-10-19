@@ -2,8 +2,9 @@
 namespace DoadorOnline.Domain
 {
     public static class UserExtensions
+
     {
-        public static void Validate(this User user, IdentityResult identityResult)
+        public static void Validate(this Donator user, IdentityResult identityResult)
         {
             foreach(var error in  identityResult.Errors)
             {

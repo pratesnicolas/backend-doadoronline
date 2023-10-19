@@ -1,5 +1,6 @@
 ﻿using DoadorOnline.Domain;
 using DoadorOnline.Infrastructure;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -11,12 +12,17 @@ public static class DependencyInjectionConfig
     {
         services.AddDbContext<ApplicationDbContext>();
         services.AddScoped<IIdentityRepository, IdentityRepository>();
-        services.AddIdentityCore<User>()
+
+        services.AddDefaultIdentity<Donator>()
                     .AddRoles<IdentityRole>()
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddTokenProvider<DataProtectorTokenProvider<Donator>>(TokenOptions.DefaultProvider);
+
+        services.Configure<DataProtectionTokenProviderOptions>(options =>
+               options.TokenLifespan = TimeSpan.FromDays(30));
 
         services.RegisterInfraServices();
-                    
+
         return services;
     }
 }

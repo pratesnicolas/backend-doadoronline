@@ -2,18 +2,18 @@
 
 public class Address : Entity
 {
-    public string UserId { get; set; }
-    public string Street { get; set; }
-    public string District { get; set; }
-    public string Number { get; set; }
+    public string DonatorId { get; private set; }
+    public string Street { get; private set; }
+    public string District { get; private set; }
+    public string Number { get; private set; }
     public string Country { get; set; }
-    public string City { get; set; }
-    public string State { get; set; }
-    public string ZipCode { get; set; }
-    
-    public User User { get; set; }
+    public string City { get; private set; }
+    public string State { get; private set; }
+    public string ZipCode { get; private set; }
 
-    public Address(string userId,
+    public virtual Donator User { get; set; }
+
+    public Address(string donatorId,
                    string street,
                    string district,
                    string number,
@@ -21,8 +21,10 @@ public class Address : Entity
                    string city,
                    string state,
                    string zipCode)
+
     {
-        UserId = userId;
+        base.Id = Guid.NewGuid().ToString();
+        DonatorId = donatorId;
         Street = street;
         District = district;
         Number = number;
@@ -34,7 +36,7 @@ public class Address : Entity
 
     public static class Factory
     {
-        public static Address NewAddress(string userId,
+        public static Address NewAddress(string donatorId,
                                          string street,
                                          string district,
                                          string number,
@@ -42,8 +44,9 @@ public class Address : Entity
                                          string city,
                                          string state,
                                          string zipCode)
+
         {
-            return new(userId,
+            return new(donatorId,
                        street,
                        district,
                        number,

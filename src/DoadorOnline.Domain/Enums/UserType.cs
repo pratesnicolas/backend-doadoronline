@@ -2,9 +2,9 @@
 
 public enum UserType : int
 {
-    Administrator = 0,
-    Hospital = 1,
-    Donator = 2,
-    Donee = 3,
-    Partner = 4
+    Administrator = 1,
+    Hospital = 2,
+    Donator = 3,
+    Donee = 4,
+    Partner = 5
 }

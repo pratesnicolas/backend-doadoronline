@@ -5,14 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace DoadorOnline.Infrastructure;
-public sealed class ApplicationDbContext : IdentityDbContext<User>
+public sealed class ApplicationDbContext : IdentityDbContext<Donator>
 {
     private readonly IConfiguration _configuration;
 
-    public DbSet<Donator> Donator { get; set; }
-    public DbSet<Donation> Donation { get; set; }
-    public DbSet<Address> Address { get; set; }
-
+    public DbSet<Donation> Donations { get; set; }
+    public DbSet<Address> Addresses { get; set; }
+    public DbSet<DonationIntention> DonationIntentions { get;set; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
        : base(options)
     {

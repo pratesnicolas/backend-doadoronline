@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
 
-namespace DoadorOnline.Application.Commands.Users
+namespace DoadorOnline.Application;
+
+public class PasswordRecoveryCommandValidator : AbstractValidator<PasswordRecoveryCommand>
 {
-    internal class PasswordRecoveryCommandValidator
-    {
-    }
+
+    public PasswordRecoveryCommandValidator() { }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoadorOnline.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231017110417_Identidade_v1")]
+    [Migration("20231018233609_Identidade_v1")]
     partial class Identidade_v1
     {
         /// <inheritdoc />
@@ -27,9 +27,9 @@ namespace DoadorOnline.Infrastructure.Migrations
 
             modelBuilder.Entity("DoadorOnline.Domain.Address", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("City")
                         .HasMaxLength(100)
@@ -40,6 +40,10 @@ namespace DoadorOnline.Infrastructure.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("District")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("DonatorId")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
@@ -55,34 +59,22 @@ namespace DoadorOnline.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("UserId")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("UserId1")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
                     b.Property<string>("ZipCode")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("DonatorId");
 
-                    b.HasIndex("UserId1")
-                        .IsUnique()
-                        .HasFilter("[UserId1] IS NOT NULL");
-
-                    b.ToTable("Address");
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("DoadorOnline.Domain.Donation", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -90,61 +82,45 @@ namespace DoadorOnline.Infrastructure.Migrations
                     b.Property<int>("DonationType")
                         .HasColumnType("int");
 
-                    b.Property<string>("IpAdress")
+                    b.Property<string>("DonatorId")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("IpAddress")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("UserId1")
+                    b.Property<int>("PointsEarned")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonatorId");
+
+                    b.ToTable("Donations", (string)null);
+                });
+
+            modelBuilder.Entity("DoadorOnline.Domain.DonationIntention", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("DonationType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DonatorId")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("DonatorId");
 
-                    b.HasIndex("UserId1")
-                        .IsUnique()
-                        .HasFilter("[UserId1] IS NOT NULL");
-
-                    b.ToTable("Donation");
+                    b.ToTable("DonationIntentions", (string)null);
                 });
 
             modelBuilder.Entity("DoadorOnline.Domain.Donator", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("BloodType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("UserId1")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1")
-                        .IsUnique()
-                        .HasFilter("[UserId1] IS NOT NULL");
-
-                    b.ToTable("Donator");
-                });
-
-            modelBuilder.Entity("DoadorOnline.Domain.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(100)
@@ -210,6 +186,9 @@ namespace DoadorOnline.Infrastructure.Migrations
                     b.Property<int>("Points")
                         .HasColumnType("int");
 
+                    b.Property<int>("RhesusFactor")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
@@ -269,21 +248,21 @@ namespace DoadorOnline.Infrastructure.Migrations
                         new
                         {
                             Id = "Hospital",
-                            ConcurrencyStamp = "a58fee3f-5636-45ee-a4f0-bfd028677959",
+                            ConcurrencyStamp = "deb2721b-a94c-458e-ba0e-8472be4df907",
                             Name = "Hospital",
                             NormalizedName = "Hospital"
                         },
                         new
                         {
                             Id = "Donee",
-                            ConcurrencyStamp = "b259c26f-1595-4670-b37e-d5f470283fe7",
+                            ConcurrencyStamp = "a3d2653a-4178-4f01-a5dd-4f41a03d64a8",
                             Name = "Donee",
                             NormalizedName = "Donee"
                         },
                         new
                         {
                             Id = "Donator",
-                            ConcurrencyStamp = "f758400e-063c-471a-aace-db8d8d9732ae",
+                            ConcurrencyStamp = "4c111403-d49c-4d0f-ac51-32a0340fceae",
                             Name = "Donator",
                             NormalizedName = "Donator"
                         });
@@ -413,39 +392,27 @@ namespace DoadorOnline.Infrastructure.Migrations
 
             modelBuilder.Entity("DoadorOnline.Domain.Address", b =>
                 {
-                    b.HasOne("DoadorOnline.Domain.User", "User")
+                    b.HasOne("DoadorOnline.Domain.Donator", "User")
                         .WithMany("Addresses")
-                        .HasForeignKey("UserId");
-
-                    b.HasOne("DoadorOnline.Domain.User", null)
-                        .WithOne("Address")
-                        .HasForeignKey("DoadorOnline.Domain.Address", "UserId1");
+                        .HasForeignKey("DonatorId");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("DoadorOnline.Domain.Donation", b =>
                 {
-                    b.HasOne("DoadorOnline.Domain.User", "User")
+                    b.HasOne("DoadorOnline.Domain.Donator", "User")
                         .WithMany("Donations")
-                        .HasForeignKey("UserId");
-
-                    b.HasOne("DoadorOnline.Domain.User", null)
-                        .WithOne("Donation")
-                        .HasForeignKey("DoadorOnline.Domain.Donation", "UserId1");
+                        .HasForeignKey("DonatorId");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DoadorOnline.Domain.Donator", b =>
+            modelBuilder.Entity("DoadorOnline.Domain.DonationIntention", b =>
                 {
-                    b.HasOne("DoadorOnline.Domain.User", "User")
-                        .WithMany("Donators")
-                        .HasForeignKey("UserId");
-
-                    b.HasOne("DoadorOnline.Domain.User", null)
-                        .WithOne("Donator")
-                        .HasForeignKey("DoadorOnline.Domain.Donator", "UserId1");
+                    b.HasOne("DoadorOnline.Domain.Donator", "User")
+                        .WithMany("DonationIntentions")
+                        .HasForeignKey("DonatorId");
 
                     b.Navigation("User");
                 });
@@ -461,7 +428,7 @@ namespace DoadorOnline.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("DoadorOnline.Domain.User", null)
+                    b.HasOne("DoadorOnline.Domain.Donator", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -470,7 +437,7 @@ namespace DoadorOnline.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("DoadorOnline.Domain.User", null)
+                    b.HasOne("DoadorOnline.Domain.Donator", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -485,7 +452,7 @@ namespace DoadorOnline.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DoadorOnline.Domain.User", null)
+                    b.HasOne("DoadorOnline.Domain.Donator", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -494,26 +461,20 @@ namespace DoadorOnline.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("DoadorOnline.Domain.User", null)
+                    b.HasOne("DoadorOnline.Domain.Donator", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DoadorOnline.Domain.User", b =>
+            modelBuilder.Entity("DoadorOnline.Domain.Donator", b =>
                 {
-                    b.Navigation("Address");
-
                     b.Navigation("Addresses");
 
-                    b.Navigation("Donation");
+                    b.Navigation("DonationIntentions");
 
                     b.Navigation("Donations");
-
-                    b.Navigation("Donator");
-
-                    b.Navigation("Donators");
                 });
 #pragma warning restore 612, 618
         }

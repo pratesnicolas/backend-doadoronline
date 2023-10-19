@@ -3,12 +3,16 @@
 namespace DoadorOnline.Infrastructure;
 public interface IIdentityRepository
 {
-    void ChangePassword(User user);
-    Task CreateUserAsync(User user);
+    void ChangePassword(Donator user);
+    Task CreateUserAsync(Donator user);
 
-    Task AddDonator(Donator donator);
 
-    Task AddAddress(Address address);   
-    Task<User> GetUserAsync(string userName);
+    Task AddDonationIntentions(List<DonationIntention> donationIntentions);
+    Task AddAddress(Address address);
+    Task<Donator> GetUserAsync(string userName);
+    Task<string> RecoverPassword(Donator user);
+    Task ResetPassword(Donator user,
+                       string token,
+                       string password);
     Task SaveChanges();
 }

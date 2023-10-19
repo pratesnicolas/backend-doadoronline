@@ -36,6 +36,7 @@ namespace DoadorOnline.Infrastructure.Migrations
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
                     BloodType = table.Column<int>(type: "int", nullable: false),
+                    RhesusFactor = table.Column<int>(type: "int", nullable: false),
                     UserType = table.Column<int>(type: "int", nullable: false),
                     Points = table.Column<int>(type: "int", nullable: false),
                     Cpf = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
@@ -81,31 +82,25 @@ namespace DoadorOnline.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Address",
+                name: "Addresses",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    Id = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    DonatorId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     Street = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     District = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     Number = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     Country = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     City = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     State = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    ZipCode = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    UserId1 = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                    ZipCode = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Address_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Address_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Addresses_AspNetUsers_DonatorId",
+                        column: x => x.DonatorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 });
@@ -196,52 +191,40 @@ namespace DoadorOnline.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Donation",
+                name: "DonationIntentions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    DonationType = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IpAdress = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    UserId1 = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                    Id = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    DonatorId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    DonationType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Donation", x => x.Id);
+                    table.PrimaryKey("PK_DonationIntentions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Donation_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Donation_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_DonationIntentions_AspNetUsers_DonatorId",
+                        column: x => x.DonatorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Donator",
+                name: "Donations",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    BloodType = table.Column<int>(type: "int", nullable: false),
-                    Points = table.Column<int>(type: "int", nullable: false),
-                    UserId1 = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                    Id = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    DonatorId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    DonationType = table.Column<int>(type: "int", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IpAddress = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    PointsEarned = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Donator", x => x.Id);
+                    table.PrimaryKey("PK_Donations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Donator_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Donator_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Donations_AspNetUsers_DonatorId",
+                        column: x => x.DonatorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 });
@@ -251,22 +234,15 @@ namespace DoadorOnline.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "Donator", "f758400e-063c-471a-aace-db8d8d9732ae", "Donator", "Donator" },
-                    { "Donee", "b259c26f-1595-4670-b37e-d5f470283fe7", "Donee", "Donee" },
-                    { "Hospital", "a58fee3f-5636-45ee-a4f0-bfd028677959", "Hospital", "Hospital" }
+                    { "Donator", "4c111403-d49c-4d0f-ac51-32a0340fceae", "Donator", "Donator" },
+                    { "Donee", "a3d2653a-4178-4f01-a5dd-4f41a03d64a8", "Donee", "Donee" },
+                    { "Hospital", "deb2721b-a94c-458e-ba0e-8472be4df907", "Hospital", "Hospital" }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Address_UserId",
-                table: "Address",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Address_UserId1",
-                table: "Address",
-                column: "UserId1",
-                unique: true,
-                filter: "[UserId1] IS NOT NULL");
+                name: "IX_Addresses_DonatorId",
+                table: "Addresses",
+                column: "DonatorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -308,35 +284,21 @@ namespace DoadorOnline.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Donation_UserId",
-                table: "Donation",
-                column: "UserId");
+                name: "IX_DonationIntentions_DonatorId",
+                table: "DonationIntentions",
+                column: "DonatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Donation_UserId1",
-                table: "Donation",
-                column: "UserId1",
-                unique: true,
-                filter: "[UserId1] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Donator_UserId",
-                table: "Donator",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Donator_UserId1",
-                table: "Donator",
-                column: "UserId1",
-                unique: true,
-                filter: "[UserId1] IS NOT NULL");
+                name: "IX_Donations_DonatorId",
+                table: "Donations",
+                column: "DonatorId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Address");
+                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -354,10 +316,10 @@ namespace DoadorOnline.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Donation");
+                name: "DonationIntentions");
 
             migrationBuilder.DropTable(
-                name: "Donator");
+                name: "Donations");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

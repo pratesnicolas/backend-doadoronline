@@ -2,5 +2,6 @@
 public enum GenderEnum : int
 {
     Male = 1,
-    Female = 2
+    Female = 2,
+    PreferNotToSay = 3,
 }

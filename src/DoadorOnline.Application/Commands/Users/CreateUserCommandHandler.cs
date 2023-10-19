@@ -22,21 +22,22 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
             return request.ValidationResult;
         }
 
-        var user = User.Factory.NewUser(request.Name,
-                                        request.Gender,
-                                        request.Cpf,
-                                        request.PhoneNumber,
-                                        request.BirthDate,
-                                        UserType.Hospital,
-                                        request.Email);
-
+        var user = Donator.Factory.NewUser(request.Name,
+                                           request.Gender,
+                                           request.Email,
+                                           request.Cpf,
+                                           request.PhoneNumber,
+                                           request.BirthDate,
+                                           request.UserType,
+                                           request.RhesusFactor);
+                                          
         user.CreateNewPassword(request.Password);
 
         await _identityRepository.CreateUserAsync(user);
-        
-        if(!user.ValidationResult.IsValid)
+
+        if (!user.ValidationResult.IsValid)
         {
-            throw new Exception(user.ValidationResult.Errors[0].ToString()); 
+            throw new Exception(user.ValidationResult.Errors[0].ToString());
         }
 
         var newAddress = Address.Factory.NewAddress(user.Id.ToString(),
@@ -48,12 +49,11 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
                                                     request.Address.State,
                                                     request.Address.ZipCode);
 
-        var newDonator = Donator.Factory.NewDonator(user.Id,request.BloodType);
-
-        user.AddDonator(newDonator);
         user.ChangeAddress(newAddress);
 
-        await _identityRepository.AddDonator(newDonator);
+        var donationsIntentions = request.DonationType.Select(x => new DonationIntention(user.Id, x));
+
+        await _identityRepository.AddDonationIntentions(donationsIntentions.ToList());
         await _identityRepository.AddAddress(newAddress);
 
         //_emailService.SendEmail();
@@ -62,4 +62,4 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
 
         return request.ValidationResult;
     }
-} 
+}

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation.Results;
+using MediatR;
 
-namespace DoadorOnline.Application.Commands.Users
+namespace DoadorOnline.Application;
+
+public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ValidationResult>
 {
-    public class ChangePasswordCommandHandler
+    public async Task<ValidationResult> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
+        throw new NotImplementedException();
     }
 }

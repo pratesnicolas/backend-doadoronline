@@ -21,6 +21,11 @@ public class UserController : ControllerBase
         return Ok();
     }
     //Password Recovery
-
+    [HttpPost("password-recovery")]
+    public async Task<IActionResult> RecoverPassword([FromBody] PasswordRecoveryCommand command)
+    {
+        await this._mediator.Send(command);
+        return Ok();
+    }
     //Password Reset
 }

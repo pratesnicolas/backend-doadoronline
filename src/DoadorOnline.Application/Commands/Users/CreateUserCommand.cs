@@ -15,7 +15,10 @@ public class CreateUserCommand : IRequest<ValidationResult>
     public DateTime BirthDate { get; set; }
     public GenderEnum Gender { get; set; }
     public BloodType BloodType { get; set; }
-    public List<DonationType> UserType { get; set; }
+    public UserType UserType { get; set; }
+    public List<DonationType> DonationType { get; set; }
+
+    public RHFactorType RhesusFactor { get; set; }
 
     public AddressDTO Address { get; set; }
 
