@@ -1,7 +1,6 @@
 ﻿using DoadorOnline.Application;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace DoadorOnline.API.Controllers;
 
@@ -9,10 +8,12 @@ namespace DoadorOnline.API.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IMediator _mediator;
-
-    public UserController(IMediator mediator)
-    => _mediator = mediator;
-
+    private readonly ITokenService _tokenService;
+    public UserController(IMediator mediator, ITokenService tokenService)
+    {
+        _mediator = mediator;
+        _tokenService = tokenService;
+    }
 
     [HttpPost]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserCommand command)
@@ -20,12 +21,28 @@ public class UserController : ControllerBase
         await this._mediator.Send(command);
         return Ok();
     }
-    //Password Recovery
     [HttpPost("password-recovery")]
     public async Task<IActionResult> RecoverPassword([FromBody] PasswordRecoveryCommand command)
     {
         await this._mediator.Send(command);
         return Ok();
     }
-    //Password Reset
+
+    [HttpPost("change-password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
+    {
+        await this._mediator.Send(command);
+        return Ok();
+    }
+
+    [HttpPost("authenticate")]
+    public async Task<IActionResult> Authenticate([FromBody] AuthenticateUserCommand command)
+    {
+        var message = await this._mediator.Send(command);
+        if (!message.IsValid)
+            return BadRequest();
+
+        var jwt = await _tokenService.GenerateToken(command.UserName);
+        return Ok(jwt);
+    }
 }

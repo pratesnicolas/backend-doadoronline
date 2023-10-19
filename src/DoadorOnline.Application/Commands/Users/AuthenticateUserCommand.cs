@@ -4,19 +4,18 @@ using System.Text.Json.Serialization;
 
 namespace DoadorOnline.Application;
 
-public class ChangePasswordCommand : IRequest<ValidationResult>
+public class AuthenticateUserCommand : IRequest<ValidationResult>
 {
-    public string Email { get; set; }
-    public string Token { get; set; }   
+    public string UserName { get; set; }
     public string Password { get; set; }
-    public string ConfirmPassword { get;set; }
 
     [JsonIgnore]
     public ValidationResult ValidationResult { get; set; }
 
     public bool IsValid()
     {
-        return true;
+        this.ValidationResult = new AuthenticateUserValidator().Validate(this);
+        return this.ValidationResult.IsValid;
     }
- 
+
 }
