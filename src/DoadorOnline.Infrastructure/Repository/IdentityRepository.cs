@@ -1,6 +1,6 @@
 ﻿using DoadorOnline.Domain;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoadorOnline.Infrastructure;
@@ -9,11 +9,15 @@ public class IdentityRepository : IIdentityRepository
 
     private readonly ApplicationDbContext _context;
     private readonly UserManager<Donator> _userManager;
+    private readonly SignInManager<Donator> _signInManager;
 
-    public IdentityRepository(ApplicationDbContext context, UserManager<Donator> userManager)
+    public IdentityRepository(ApplicationDbContext context,
+                              UserManager<Donator> userManager,
+                              SignInManager<Donator> signInManager)
     {
         _context = context;
         _userManager = userManager;
+        _signInManager = signInManager;
     }
 
     public async Task<Donator> GetUserAsync(string userName)
@@ -21,6 +25,29 @@ public class IdentityRepository : IIdentityRepository
         var user = await _userManager.Users.SingleOrDefaultAsync(x => x.UserName == userName);
         return user;
     }
+
+    public async Task<Donator> GetUserClaims(string userName)
+    {
+        var user = await _userManager.Users.SingleOrDefaultAsync(x => x.UserName == userName);
+        return user;
+    }
+
+    public async Task<IList<string>> GetUserRoles(Donator user)    
+      =>  await _userManager.GetRolesAsync(user);
+
+    public async Task<ValidationResult> SignInAsync(Donator user, string password)
+    {
+        var sign =  await this._signInManager.PasswordSignInAsync(user,
+                                                             password,
+                                                             true,
+                                                             true);
+
+        if (!sign.Succeeded)
+            user.AdicionarErro("User or password is invalid.");
+
+        return user.ValidationResult;
+    }
+
     public async Task<string> RecoverPassword(Donator user)
     {
         return await this._userManager.GeneratePasswordResetTokenAsync(user);
@@ -54,11 +81,6 @@ public class IdentityRepository : IIdentityRepository
 
     public async Task AddAddress(Address address)
      => await _context.Addresses.AddAsync(address);
-
-    public async void ChangePassword(Donator user)
-    {
-
-    }
 
     public async Task SaveChanges()
     {

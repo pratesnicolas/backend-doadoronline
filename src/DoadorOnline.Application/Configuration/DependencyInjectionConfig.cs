@@ -14,6 +14,7 @@ public static class DependencyInjectionConfig
     {
         services.AddDbContext<ApplicationDbContext>();
         services.AddScoped<IIdentityRepository, IdentityRepository>();
+        services.AddScoped<ITokenService, TokenService>();
 
         services.AddDefaultIdentity<Donator>()
                     .AddRoles<IdentityRole>()
