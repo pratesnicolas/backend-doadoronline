@@ -29,6 +29,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
                                            request.PhoneNumber,
                                            request.BirthDate,
                                            request.UserType,
+                                           request.BloodType,
                                            request.RhesusFactor);
                                           
         user.CreateNewPassword(request.Password);
@@ -56,7 +57,9 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
         await _identityRepository.AddDonationIntentions(donationsIntentions.ToList());
         await _identityRepository.AddAddress(newAddress);
 
-        //_emailService.SendEmail();
+        _emailService.SendEmail("Welcome to Doador Online",
+                                $@"Hello {user.Name}, <br><br>You have been sucessfully registered on our platform.",
+                                request.Email);
 
         await _identityRepository.SaveChanges();
 

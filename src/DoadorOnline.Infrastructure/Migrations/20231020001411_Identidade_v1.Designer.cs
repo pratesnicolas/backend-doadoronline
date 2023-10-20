@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoadorOnline.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231018233609_Identidade_v1")]
+    [Migration("20231020001411_Identidade_v1")]
     partial class Identidade_v1
     {
         /// <inheritdoc />
@@ -132,7 +132,7 @@ namespace DoadorOnline.Infrastructure.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("BloodType")
+                    b.Property<int?>("BloodType")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -186,7 +186,7 @@ namespace DoadorOnline.Infrastructure.Migrations
                     b.Property<int>("Points")
                         .HasColumnType("int");
 
-                    b.Property<int>("RhesusFactor")
+                    b.Property<int?>("RhesusFactor")
                         .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
@@ -247,22 +247,29 @@ namespace DoadorOnline.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
+                            Id = "Administrator",
+                            ConcurrencyStamp = "55d35ed9-b270-4342-bb0d-b4fdf2fce512",
+                            Name = "Administrator",
+                            NormalizedName = "Administrator"
+                        },
+                        new
+                        {
                             Id = "Hospital",
-                            ConcurrencyStamp = "deb2721b-a94c-458e-ba0e-8472be4df907",
+                            ConcurrencyStamp = "eed9d550-6c8d-4399-b52a-5130c0b600a9",
                             Name = "Hospital",
                             NormalizedName = "Hospital"
                         },
                         new
                         {
                             Id = "Donee",
-                            ConcurrencyStamp = "a3d2653a-4178-4f01-a5dd-4f41a03d64a8",
+                            ConcurrencyStamp = "3cf24f40-93b1-4a77-958c-9cbc2ff33bf0",
                             Name = "Donee",
                             NormalizedName = "Donee"
                         },
                         new
                         {
                             Id = "Donator",
-                            ConcurrencyStamp = "4c111403-d49c-4d0f-ac51-32a0340fceae",
+                            ConcurrencyStamp = "4ec43bce-afaa-4905-b42b-06a02ec9e204",
                             Name = "Donator",
                             NormalizedName = "Donator"
                         });
@@ -327,11 +334,11 @@ namespace DoadorOnline.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(100)
+                        .HasMaxLength(128)
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(100)
+                        .HasMaxLength(128)
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("ProviderDisplayName")
@@ -374,11 +381,11 @@ namespace DoadorOnline.Infrastructure.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(100)
+                        .HasMaxLength(128)
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(100)
+                        .HasMaxLength(128)
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("Value")

@@ -35,8 +35,8 @@ namespace DoadorOnline.Infrastructure.Migrations
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    BloodType = table.Column<int>(type: "int", nullable: false),
-                    RhesusFactor = table.Column<int>(type: "int", nullable: false),
+                    BloodType = table.Column<int>(type: "int", nullable: true),
+                    RhesusFactor = table.Column<int>(type: "int", nullable: true),
                     UserType = table.Column<int>(type: "int", nullable: false),
                     Points = table.Column<int>(type: "int", nullable: false),
                     Cpf = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
@@ -130,8 +130,8 @@ namespace DoadorOnline.Infrastructure.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    ProviderKey = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    LoginProvider = table.Column<string>(type: "varchar(128)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "varchar(128)", maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UserId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                 },
@@ -175,8 +175,8 @@ namespace DoadorOnline.Infrastructure.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    LoginProvider = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    LoginProvider = table.Column<string>(type: "varchar(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "varchar(128)", maxLength: 128, nullable: false),
                     Value = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
@@ -234,9 +234,10 @@ namespace DoadorOnline.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "Donator", "4c111403-d49c-4d0f-ac51-32a0340fceae", "Donator", "Donator" },
-                    { "Donee", "a3d2653a-4178-4f01-a5dd-4f41a03d64a8", "Donee", "Donee" },
-                    { "Hospital", "deb2721b-a94c-458e-ba0e-8472be4df907", "Hospital", "Hospital" }
+                    { "Administrator", "55d35ed9-b270-4342-bb0d-b4fdf2fce512", "Administrator", "Administrator" },
+                    { "Donator", "4ec43bce-afaa-4905-b42b-06a02ec9e204", "Donator", "Donator" },
+                    { "Donee", "3cf24f40-93b1-4a77-958c-9cbc2ff33bf0", "Donee", "Donee" },
+                    { "Hospital", "eed9d550-6c8d-4399-b52a-5130c0b600a9", "Hospital", "Hospital" }
                 });
 
             migrationBuilder.CreateIndex(

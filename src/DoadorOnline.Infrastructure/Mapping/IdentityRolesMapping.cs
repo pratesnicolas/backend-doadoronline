@@ -10,6 +10,14 @@ public class IdentityRolesMapping : IEntityTypeConfiguration<IdentityRole>
 {
     public void Configure(EntityTypeBuilder<IdentityRole> builder)
     {
+        var roleAdministrator = new IdentityRole
+        {
+            Name = CustomRoleTypes.Administrator,
+            NormalizedName = CustomRoleTypes.Administrator,
+            ConcurrencyStamp = Guid.NewGuid().ToString(),
+            Id = CustomRoleTypes.Administrator
+        };
+
         var roleHospital = new IdentityRole
         {
             Name = CustomRoleTypes.Hospital,
@@ -35,7 +43,8 @@ public class IdentityRolesMapping : IEntityTypeConfiguration<IdentityRole>
         };
 
 
-        builder.HasData(roleHospital,
+        builder.HasData(roleAdministrator,
+                        roleHospital,
                         roleDonee,
                         roleDonator);
     }

@@ -26,19 +26,19 @@ public class TokenService : ITokenService
         var user = await this._identityRepository.GetUserAsync(cpfCnpj);
         var roles = await this._identityRepository.GetUserRoles(user);
 
-        var identityClaims = this.ObterClaimsUsuario(roles, user);
-        var encodedToken = this.CodificarToken(identityClaims);
+        var identityClaims = this.GetUserClaims(roles, user);
+        var encodedToken = this.EncryptToken(identityClaims);
 
         return new(encodedToken);
     }
 
-    private ClaimsIdentity ObterClaimsUsuario(IList<string> roles,
+    private ClaimsIdentity GetUserClaims(IList<string> roles,
                                               Donator user)
     {
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Jti, user.Id),
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Name),
             new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow)),
             new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow), ClaimValueTypes.Integer64)
         };
@@ -52,7 +52,7 @@ public class TokenService : ITokenService
         return identityClaims;
     }
 
-    private string CodificarToken(ClaimsIdentity identityClaims)
+    private string EncryptToken(ClaimsIdentity identityClaims)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var requestHttpContextAccessor = this._accessor.HttpContext.Request;
