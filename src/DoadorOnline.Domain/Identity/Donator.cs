@@ -9,8 +9,8 @@ public class Donator : IdentityUser
     public string Name { get; private set; }
     public DateTime BirthDate { get; private set; }
     public GenderEnum Gender { get; private set; }
-    public BloodType BloodType { get; private set; }
-    public RHFactorType RhesusFactor { get; private set; }
+    public BloodType? BloodType { get; private set; }
+    public RHFactorType? RhesusFactor { get; private set; }
 
     public UserType UserType { get; private set; }
     public int Points { get; private set; }
@@ -36,6 +36,7 @@ public class Donator : IdentityUser
                    string phoneNumber,
                    DateTime birthDate,
                    UserType userType,
+                   BloodType bloodType,
                    RHFactorType rhesusFactorType)
 
     {
@@ -83,6 +84,7 @@ public class Donator : IdentityUser
                                       string phoneNumber,
                                       DateTime birthDate,
                                       UserType userType,
+                                      BloodType bloodType,
                                       RHFactorType rhesusFactorType)
 
 
@@ -94,6 +96,7 @@ public class Donator : IdentityUser
                        phoneNumber,
                        birthDate,
                        userType,
+                       bloodType,
                        rhesusFactorType);
 
         }

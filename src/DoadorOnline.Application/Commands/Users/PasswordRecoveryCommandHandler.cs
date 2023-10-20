@@ -29,8 +29,9 @@ public class PasswordRecoveryCommandHandler : IRequestHandler<PasswordRecoveryCo
 
         var token = recoveryToken.GerarUrlEncode().GerarBase64Encode();
 
-        _emailService.SendEmail("Recuperação de senha",
-                                $"Clique no link seguro para definir sua nova senha: \n https://frontend-doador-online.vercel.app/password-recovery/{user.UserName}/{token}", user.UserName);
+        _emailService.SendEmail("Password recovery",
+                                $@"Click on the following link to reset your password: \n\n https://frontend-doador-online.vercel.app/password-recovery/{user.UserName}/{token}", 
+                                user.UserName);
 
         return request.ValidationResult;
     }

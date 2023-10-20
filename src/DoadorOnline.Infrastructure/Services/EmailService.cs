@@ -7,12 +7,12 @@ namespace DoadorOnline.Infrastructure;
 
 public class EmailService : IEmailService
 {
-    public void SendEmail(string subject, string body, string from)
+    public void SendEmail(string subject, string body, string to)
     {
         var email = new MimeMessage();
         email.From.Add(MailboxAddress.Parse("contatodoadoroline@gmail.com"));
-        email.To.Add(MailboxAddress.Parse(from));
-        email.Subject = "subject";
+        email.To.Add(MailboxAddress.Parse(to));
+        email.Subject = subject;
         email.Body = new TextPart(TextFormat.Html) { Text = body };
 
         using var smtp = new SmtpClient();
