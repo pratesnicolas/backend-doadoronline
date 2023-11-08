@@ -1,5 +1,6 @@
 ﻿using DoadorOnline.Domain;
 using DoadorOnline.Infrastructure;
+using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 
@@ -17,11 +18,6 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
 
     public async Task<ValidationResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        if (!request.IsValid())
-        {
-            return request.ValidationResult;
-        }
-
         var user = Donator.Factory.NewUser(request.Name,
                                            request.Gender,
                                            request.Email,
@@ -38,7 +34,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
 
         if (!user.ValidationResult.IsValid)
         {
-            throw new Exception(user.ValidationResult.Errors[0].ToString());
+            user.AddError("Error on creating user");
+            return user.ValidationResult;
         }
 
         var newAddress = Address.Factory.NewAddress(user.Id.ToString(),

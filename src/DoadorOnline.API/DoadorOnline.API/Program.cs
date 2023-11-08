@@ -1,4 +1,8 @@
 using DoadorOnline.Application;
+using FluentValidation;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,10 +11,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterServices(builder.Configuration);
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjectionConfig).Assembly));
 
+builder.Services.AddValidatorsFromAssembly(typeof(DependencyInjectionConfig).Assembly);
+
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(DependencyInjectionConfig).Assembly);
+    cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+    cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
+});
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -18,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseCors(builder => builder.AllowAnyHeader().
                                AllowAnyHeader().

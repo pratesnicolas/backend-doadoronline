@@ -8,7 +8,7 @@ namespace DoadorOnline.Domain
         {
             foreach(var error in  identityResult.Errors)
             {
-                user.AdicionarErro(error.Description);
+                user.AddError(error.Description);
             }
         }
     }

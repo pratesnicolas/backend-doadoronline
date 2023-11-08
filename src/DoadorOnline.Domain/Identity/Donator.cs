@@ -56,7 +56,7 @@ public class Donator : IdentityUser
         RhesusFactor = rhesusFactorType;
     }
 
-    public void AdicionarErro(string erro)
+    public void AddError(string erro)
       => this.ValidationResult.Errors.Add(new ValidationFailure("", erro));
     public void ChangeAddress(Address address)
     {
