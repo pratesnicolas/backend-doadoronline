@@ -37,9 +37,9 @@ public class CreateUserCommand : IRequest<ValidationResult>
 
     }
 
-    public bool IsValid()
+    /*public bool IsValid()
     {
         this.ValidationResult = new CreateUserCommandValidator().Validate(this);
         return this.ValidationResult.IsValid;
-    }
+    }*/
 }

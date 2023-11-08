@@ -43,7 +43,7 @@ public class IdentityRepository : IIdentityRepository
                                                              true);
 
         if (!sign.Succeeded)
-            user.AdicionarErro("User or password is invalid.");
+            user.AddError("User or password is invalid.");
 
         return user.ValidationResult;
     }

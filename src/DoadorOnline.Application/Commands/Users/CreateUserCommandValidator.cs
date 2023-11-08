@@ -3,5 +3,12 @@
 namespace DoadorOnline.Application;
 public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
-    public CreateUserCommandValidator() { }
+    public CreateUserCommandValidator() 
+    {
+
+        this.RuleFor(x => x.Name)
+            .NotEmpty()
+            .WithMessage("Name must be informed.");
+   
+    }
 }

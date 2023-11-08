@@ -1,4 +1,5 @@
 ﻿using DoadorOnline.Application;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,11 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserCommand command)
     {
-        await this._mediator.Send(command);
+        var result = await this._mediator.Send(command);
+        if (result.Errors.Any())
+        {
+            return BadRequest(result.Errors);
+        }
         return Ok();
     }
     [HttpPost("password-recovery")]
