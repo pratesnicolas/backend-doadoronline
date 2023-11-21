@@ -1,5 +1,4 @@
 ﻿using DoadorOnline.Application;
-using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,22 +9,30 @@ public class UserController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly ITokenService _tokenService;
-    public UserController(IMediator mediator, ITokenService tokenService)
+    private readonly IDonationQueries _donationQueries;
+    public UserController(IMediator mediator,
+                          ITokenService tokenService,
+                          IDonationQueries donationQueries)
     {
         _mediator = mediator;
         _tokenService = tokenService;
+        _donationQueries = donationQueries;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetUsersAsync([FromQuery] GetUserRequestDTO paramsDTO)
+    {
+        var result = await _donationQueries.GetDonators(paramsDTO);
+        return Ok(result);
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserCommand command)
     {
-        var result = await this._mediator.Send(command);
-        if (result.Errors.Any())
-        {
-            return BadRequest(result.Errors);
-        }
+        await this._mediator.Send(command);
         return Ok();
     }
+
     [HttpPost("password-recovery")]
     public async Task<IActionResult> RecoverPassword([FromBody] PasswordRecoveryCommand command)
     {
@@ -49,5 +56,12 @@ public class UserController : ControllerBase
 
         var jwt = await _tokenService.GenerateToken(command.Email);
         return Ok(jwt);
+    }
+
+    [HttpGet("{userId}/donations")]
+    public async Task<IActionResult> GetUserDonations([FromRoute] string userId)
+    {
+        var donations = await _donationQueries.GetUserDonations(userId);
+        return Ok(donations);
     }
 }

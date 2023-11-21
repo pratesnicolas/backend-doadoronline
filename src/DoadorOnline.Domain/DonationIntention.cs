@@ -7,8 +7,7 @@ public class DonationIntention : Entity
     public DonationType DonationType { get; set; }
 
     //EF Relationship
-
-    public virtual Donator User { get; set; }
+    /*public virtual Donator User { get; set; }*/
 
     //EF
     public DonationIntention() {}

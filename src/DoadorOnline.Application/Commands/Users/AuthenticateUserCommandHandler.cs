@@ -22,12 +22,12 @@ public class AuthenticateUserCommandHandler : IRequestHandler<AuthenticateUserCo
         var user = await _identityRepository.GetUserAsync(request.Email);
 
         if (user is null)
-            throw new Exception("User not found.");
+            throw new Exception("Usuário não encontrado.");
 
         var signIn = await _identityRepository.SignInAsync(user, request.Password);
 
         if (!signIn.IsValid)
-            throw new Exception("Erro ao realizar login");
+            throw new Exception("E-mail ou senha incorretos.");
 
         return request.ValidationResult;
     }

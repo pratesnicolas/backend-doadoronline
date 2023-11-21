@@ -9,8 +9,8 @@ public class Donator : IdentityUser
     public string Name { get; private set; }
     public DateTime BirthDate { get; private set; }
     public GenderEnum Gender { get; private set; }
-    public BloodType? BloodType { get; private set; }
-    public RHFactorType? RhesusFactor { get; private set; }
+    public BloodType BloodType { get; private set; }
+    public RHFactorType RhesusFactor { get; private set; }
 
     public UserType UserType { get; private set; }
     public int Points { get; private set; }
@@ -25,6 +25,9 @@ public class Donator : IdentityUser
 
     public ICollection<DonationIntention> DonationIntentions => this._donationIntentions;
     private readonly List<DonationIntention> _donationIntentions = new();
+
+    public ICollection<Campaign> Campaigns => this._campaigns;
+    private readonly List<Campaign> _campaigns = new();
 
     #endregion
     public Donator() { }
@@ -52,6 +55,7 @@ public class Donator : IdentityUser
         PhoneNumber = phoneNumber;
         UserName = Email;
         BirthDate = birthDate;
+        BloodType = bloodType;
         UserType = userType;
         RhesusFactor = rhesusFactorType;
     }

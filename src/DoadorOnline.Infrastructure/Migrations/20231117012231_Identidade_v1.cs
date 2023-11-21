@@ -35,8 +35,8 @@ namespace DoadorOnline.Infrastructure.Migrations
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    BloodType = table.Column<int>(type: "int", nullable: true),
-                    RhesusFactor = table.Column<int>(type: "int", nullable: true),
+                    BloodType = table.Column<int>(type: "int", nullable: false),
+                    RhesusFactor = table.Column<int>(type: "int", nullable: false),
                     UserType = table.Column<int>(type: "int", nullable: false),
                     Points = table.Column<int>(type: "int", nullable: false),
                     Cpf = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
@@ -191,6 +191,30 @@ namespace DoadorOnline.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Campaigns",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    DonatorId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DoneeName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    DonationPlace = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    DoneeBloodType = table.Column<int>(type: "int", nullable: false),
+                    DoneeRhFactor = table.Column<int>(type: "int", nullable: false),
+                    DoneeBirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Base64Image = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Campaigns", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Campaigns_AspNetUsers_DonatorId",
+                        column: x => x.DonatorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DonationIntentions",
                 columns: table => new
                 {
@@ -214,6 +238,7 @@ namespace DoadorOnline.Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     DonatorId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    DonationPlace = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     DonationType = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IpAddress = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
@@ -234,10 +259,10 @@ namespace DoadorOnline.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "Administrator", "55d35ed9-b270-4342-bb0d-b4fdf2fce512", "Administrator", "Administrator" },
-                    { "Donator", "4ec43bce-afaa-4905-b42b-06a02ec9e204", "Donator", "Donator" },
-                    { "Donee", "3cf24f40-93b1-4a77-958c-9cbc2ff33bf0", "Donee", "Donee" },
-                    { "Hospital", "eed9d550-6c8d-4399-b52a-5130c0b600a9", "Hospital", "Hospital" }
+                    { "Administrator", "39f7ae5b-8fe1-423f-acd5-f56938acbfe2", "Administrator", "Administrator" },
+                    { "Donator", "4e4bcf12-eaf4-4e48-9e0e-367cbc03059d", "Donator", "Donator" },
+                    { "Donee", "55796912-43af-42a0-9db3-aca654aa42d1", "Donee", "Donee" },
+                    { "Hospital", "673cb7d2-61e8-49dc-9310-01f5cc5912ed", "Hospital", "Hospital" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -285,6 +310,11 @@ namespace DoadorOnline.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Campaigns_DonatorId",
+                table: "Campaigns",
+                column: "DonatorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DonationIntentions_DonatorId",
                 table: "DonationIntentions",
                 column: "DonatorId");
@@ -315,6 +345,9 @@ namespace DoadorOnline.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Campaigns");
 
             migrationBuilder.DropTable(
                 name: "DonationIntentions");
