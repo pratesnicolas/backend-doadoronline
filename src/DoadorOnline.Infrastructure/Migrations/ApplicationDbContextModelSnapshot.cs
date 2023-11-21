@@ -67,6 +67,47 @@ namespace DoadorOnline.Infrastructure.Migrations
                     b.ToTable("Addresses", (string)null);
                 });
 
+            modelBuilder.Entity("DoadorOnline.Domain.Campaign", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Base64Image")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("DonationPlace")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("DonatorId")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("DoneeBirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DoneeBloodType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DoneeName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("DoneeRhFactor")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonatorId");
+
+                    b.ToTable("Campaigns", (string)null);
+                });
+
             modelBuilder.Entity("DoadorOnline.Domain.Donation", b =>
                 {
                     b.Property<string>("Id")
@@ -75,6 +116,10 @@ namespace DoadorOnline.Infrastructure.Migrations
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("DonationPlace")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<int>("DonationType")
                         .HasColumnType("int");
@@ -129,7 +174,7 @@ namespace DoadorOnline.Infrastructure.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("BloodType")
+                    b.Property<int>("BloodType")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -183,7 +228,7 @@ namespace DoadorOnline.Infrastructure.Migrations
                     b.Property<int>("Points")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RhesusFactor")
+                    b.Property<int>("RhesusFactor")
                         .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
@@ -245,28 +290,28 @@ namespace DoadorOnline.Infrastructure.Migrations
                         new
                         {
                             Id = "Administrator",
-                            ConcurrencyStamp = "55d35ed9-b270-4342-bb0d-b4fdf2fce512",
+                            ConcurrencyStamp = "39f7ae5b-8fe1-423f-acd5-f56938acbfe2",
                             Name = "Administrator",
                             NormalizedName = "Administrator"
                         },
                         new
                         {
                             Id = "Hospital",
-                            ConcurrencyStamp = "eed9d550-6c8d-4399-b52a-5130c0b600a9",
+                            ConcurrencyStamp = "673cb7d2-61e8-49dc-9310-01f5cc5912ed",
                             Name = "Hospital",
                             NormalizedName = "Hospital"
                         },
                         new
                         {
                             Id = "Donee",
-                            ConcurrencyStamp = "3cf24f40-93b1-4a77-958c-9cbc2ff33bf0",
+                            ConcurrencyStamp = "55796912-43af-42a0-9db3-aca654aa42d1",
                             Name = "Donee",
                             NormalizedName = "Donee"
                         },
                         new
                         {
                             Id = "Donator",
-                            ConcurrencyStamp = "4ec43bce-afaa-4905-b42b-06a02ec9e204",
+                            ConcurrencyStamp = "4e4bcf12-eaf4-4e48-9e0e-367cbc03059d",
                             Name = "Donator",
                             NormalizedName = "Donator"
                         });
@@ -403,6 +448,15 @@ namespace DoadorOnline.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("DoadorOnline.Domain.Campaign", b =>
+                {
+                    b.HasOne("DoadorOnline.Domain.Donator", "User")
+                        .WithMany("Campaigns")
+                        .HasForeignKey("DonatorId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DoadorOnline.Domain.Donation", b =>
                 {
                     b.HasOne("DoadorOnline.Domain.Donator", "User")
@@ -475,6 +529,8 @@ namespace DoadorOnline.Infrastructure.Migrations
             modelBuilder.Entity("DoadorOnline.Domain.Donator", b =>
                 {
                     b.Navigation("Addresses");
+
+                    b.Navigation("Campaigns");
 
                     b.Navigation("DonationIntentions");
 

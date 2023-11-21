@@ -17,8 +17,12 @@ public class DonatorMapping : IEntityTypeConfiguration<Donator>
                .HasForeignKey(x => x.DonatorId);
 
         builder.HasMany(x => x.DonationIntentions)
-              .WithOne(x => x.User)
-              .HasForeignKey(x => x.DonatorId);
+                .WithOne()
+                .HasForeignKey(x => x.DonatorId);
+
+        builder.HasMany(x => x.Campaigns)
+               .WithOne(x => x.User)
+               .HasForeignKey(x => x.DonatorId);
 
         builder.HasKey(x => x.Id);
     }
