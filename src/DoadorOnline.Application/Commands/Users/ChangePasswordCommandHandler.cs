@@ -28,7 +28,7 @@ public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordComman
 
         await _identityRepository.ResetPassword(user, tokenDecoded, request.Password);
 
-        _emailService.SendEmail("Password reset", "Your password has been successfully changed.", user.Email);
+        _emailService.SendEmail("Senha alterada", "Sua senha foi alterado com sucesso.", user.Email);
 
         return request.ValidationResult;
     }

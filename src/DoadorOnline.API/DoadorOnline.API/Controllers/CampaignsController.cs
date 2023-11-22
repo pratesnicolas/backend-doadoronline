@@ -32,6 +32,13 @@ namespace DoadorOnline.API.Controllers
             return Ok(campaigns);
         }
 
+        [HttpGet("carrousel")]
+        public async Task<IActionResult> GetCarouselCampaignsAsync()
+        {
+            var campaigns = await _donationQueries.GetCrouselCampaigns();
+            return Ok(campaigns);
+        }
+
         [HttpGet("{campaignId}")]
         public async Task<IActionResult> GetCampaign([FromRoute] string campaignId)
         {

@@ -23,14 +23,14 @@ public class PasswordRecoveryCommandHandler : IRequestHandler<PasswordRecoveryCo
             return request.ValidationResult;
         }
 
-        var user = await _identidadeRepository.GetUserAsync(request.Email) ?? throw new Exception("User doesn't exist on our database.");
+        var user = await _identidadeRepository.GetUserAsync(request.Email) ?? throw new Exception("Usuário não encontrado.");
 
         var recoveryToken = await _identidadeRepository.RecoverPassword(user);
 
         var token = recoveryToken.GerarUrlEncode().GerarBase64Encode();
 
-        _emailService.SendEmail("Password recovery",
-                                $@"Click on the following link to reset your password: \n\n https://frontend-doador-online.vercel.app/password-recovery/{user.UserName}/{token}", 
+        _emailService.SendEmail("Recuperação de senha",
+                                $@"Click no link a seguir para realizar a alteração da sua senha: \n\n https://frontend-doador-online.vercel.app/password-recovery/{user.UserName}/{token}", 
                                 user.UserName);
 
         return request.ValidationResult;

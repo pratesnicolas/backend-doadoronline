@@ -16,7 +16,8 @@ public class DonationQueries : IDonationQueries
         var donators = await _identityRepository.GetUsers(request.Name,
                                                           request.DonationType,
                                                           request.BloodType,
-                                                          request.RHFactor);
+                                                          request.RHFactor,
+                                                          UserType.Donator);
 
 
         var donatorsVM = donators.Select(x => new DonatorViewModel(x.Name,
@@ -48,6 +49,19 @@ public class DonationQueries : IDonationQueries
     public async Task<IEnumerable<CampaignViewModel>> GetCampaigns(string name, BloodType? bloodtype, RHFactorType? rhFactor)
     {
         var campaigns = await _identityRepository.GetCampaigns(name, bloodtype, rhFactor);
+
+        var campaignsVM = campaigns.Select(x => new CampaignViewModel(x.Id,
+                                                                      x.DoneeName,
+                                                                      DateTime.Today.Year - x.DoneeBirthDate.Year,
+                                                                      Enum.GetName(x.DoneeBloodType),
+                                                                      Enum.GetName(x.DoneeRhFactor)));
+        return campaignsVM;
+
+    }
+
+    public async Task<IEnumerable<CampaignViewModel>> GetCarouselCampaigns()
+    {
+        var campaigns = await _identityRepository.GetCarouselCampaigns();
 
         var campaignsVM = campaigns.Select(x => new CampaignViewModel(x.Id,
                                                                       x.DoneeName,

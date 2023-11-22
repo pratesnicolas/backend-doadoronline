@@ -32,21 +32,34 @@ public class IdentityRepository : IIdentityRepository
         return user;
     }
 
+
+    public async Task<Donator> GetUserByCpfEmail(string cpf, string email)
+    {
+        return await _userManager
+            .Users
+            .SingleOrDefaultAsync(x => x.Cpf == cpf 
+                                       || x.Email == email);
+    }
+
+
     public async Task<List<Donator>> GetUsers(string name,
                                               DonationType? donationType,
                                               BloodType? bloodType,
-                                              RHFactorType? rhFactor)
+                                              RHFactorType? rhFactor,
+                                              UserType? userType)
     {
         var users = await _userManager.Users.Include(x => x.DonationIntentions)
                                              .Where(x => (bloodType == null || x.BloodType == bloodType)
                                                          && (rhFactor == null || x.RhesusFactor == rhFactor)
                                                          && (donationType == null || x.DonationIntentions.Any(p => p.DonationType == donationType))
-                                                         && (string.IsNullOrEmpty(name) || x.Name.Contains(name.Trim()))).ToListAsync();
+                                                         && (string.IsNullOrEmpty(name) || x.Name.Contains(name.Trim()))
+                                                         && (userType == null || x.UserType == userType)).ToListAsync();
                                                     
 
         return users;
 
     }
+
     public async Task<List<Donation>> GetUserDonations(string userId) 
     {
         var donations = await _context.Donations.Where(x => x.DonatorId == userId).ToListAsync();
@@ -60,6 +73,17 @@ public class IdentityRepository : IIdentityRepository
         var campaigns = await _context.Campaigns.Where(x => (string.IsNullOrEmpty(name) || x.DoneeName.Contains(name)) 
                                                        && (bloodType == null || x.DoneeBloodType == bloodType) 
                                                        && (rhFactor == null || x.DoneeRhFactor == rhFactor)).ToListAsync();
+
+        return campaigns;
+    }
+    
+    public async Task<List<Campaign>> GetCarouselCampaigns()
+    {
+        var campaigns = await _context
+            .Campaigns
+            .OrderByDescending(x => x.ExpirationDate)
+            .Take(12)
+            .ToListAsync();
 
         return campaigns;
     }

@@ -8,7 +8,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 
         this.RuleFor(x => x.Name)
             .NotEmpty()
-            .WithMessage("Name must be informed.");
+            .WithMessage("Nome deve ser informado.");
    
     }
 }
