@@ -16,7 +16,7 @@ public class CreateCampaignCommandHandler : IRequestHandler<CreateCampaignComman
 
     public async Task<ValidationResult> Handle(CreateCampaignCommand request, CancellationToken cancellationToken)
     {
-        var campaignCreator = await _identityRepository.GetUserById(request.UserId) ?? throw new Exception("User not found.");
+        var campaignCreator = await _identityRepository.GetUserById(request.UserId) ?? throw new Exception("Usuário não encontrado.");
 
         var base64Image = string.Empty;
 

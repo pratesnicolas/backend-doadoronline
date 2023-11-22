@@ -9,9 +9,11 @@ public interface IIdentityRepository
     Task<List<Donator>> GetUsers(string name,
                                  DonationType? donationType,
                                  BloodType? bloodType,
-                                 RHFactorType? rhFactor);
+                                 RHFactorType? rhFactor,
+                                 UserType? userType);
 
     Task<Donator> GetUserById(string userId);
+    Task<Donator> GetUserByCpfEmail(string cpf, string email);
     Task<Donator> GetUserAsync(string userName);
     Task<IList<string>> GetUserRoles(Donator user);
     Task<List<Donation>> GetUserDonations(string userId);
@@ -20,6 +22,7 @@ public interface IIdentityRepository
     Task<List<Campaign>> GetCampaigns(string name,
                                       BloodType? bloodType,
                                       RHFactorType? rhFactor);
+    Task<List<Campaign>> GetCarouselCampaigns();
     Task<ValidationResult> SignInAsync(Donator user, string password);
 
     Task ResetPassword(Donator user,

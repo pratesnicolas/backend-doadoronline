@@ -18,6 +18,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
 
     public async Task<ValidationResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+
         var user = Donator.Factory.NewUser(request.Name,
                                            request.Gender,
                                            request.Email,
@@ -30,11 +31,18 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
                                           
         user.CreateNewPassword(request.Password);
 
+        var userExist = await _identityRepository.GetUserByCpfEmail(request.Cpf, request.Email);
+        if (userExist != null)
+        {
+            user.AddError("Usuário já cadastrado.");
+            return user.ValidationResult;
+        }
+
         await _identityRepository.CreateUserAsync(user);
 
         if (!user.ValidationResult.IsValid)
         {
-            user.AddError("Error on creating user");
+            user.AddError("Não foi possível realizar o cadastro do usuário.");
             return user.ValidationResult;
         }
 
@@ -54,8 +62,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
         await _identityRepository.AddDonationIntentions(donationsIntentions.ToList());
         await _identityRepository.AddAddress(newAddress);
 
-        _emailService.SendEmail("Welcome to Doador Online",
-                                $@"Hello {user.Name}, <br><br>You have been sucessfully registered on our platform.",
+        _emailService.SendEmail("Bem-vindo(a) ao Doador Online",
+                                $@"Olá {user.Name}, <br><br>Você foi registrado com sucesso na nossa plataforma.",
                                 request.Email);
 
         await _identityRepository.SaveChanges();
