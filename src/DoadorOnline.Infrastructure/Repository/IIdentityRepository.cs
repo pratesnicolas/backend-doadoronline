@@ -5,6 +5,7 @@ namespace DoadorOnline.Infrastructure;
 public interface IIdentityRepository
 {
     Task CreateUserAsync(Donator user);
+    Task UpdateUser(Donator user);
 
     Task<List<Donator>> GetUsers(string name,
                                  DonationType? donationType,
@@ -17,7 +18,7 @@ public interface IIdentityRepository
     Task<Donator> GetUserAsync(string userName);
     Task<IList<string>> GetUserRoles(Donator user);
     Task<List<Donation>> GetUserDonations(string userId);
-
+    Task AddDonation(Donation donation);
     Task<Campaign> GetCampaignById(string campaignId);
     Task<List<Campaign>> GetCampaigns(string name,
                                       BloodType? bloodType,

@@ -7,6 +7,7 @@ namespace DoadorOnline.Application
     {
         Task<IEnumerable<DonationViewModel>> GetUserDonations(string userId);
         Task<IEnumerable<DonatorViewModel>> GetDonators(GetUserRequestDTO request);
+        Task<UserDetailsViewModel> GetUserDetails(string userId);
 
         Task<IEnumerable<CampaignViewModel>> GetCampaigns(string name, BloodType? bloodtype, RHFactorType? rhFactor);
         Task<IEnumerable<CampaignViewModel>> GetCarouselCampaigns();

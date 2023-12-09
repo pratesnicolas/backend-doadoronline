@@ -50,6 +50,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
                                                     request.Address.Street,
                                                     request.Address.District,
                                                     request.Address.Number,
+                                                    request.Address.AddressLine2,
                                                     request.Address.Country,
                                                     request.Address.City,
                                                     request.Address.State,

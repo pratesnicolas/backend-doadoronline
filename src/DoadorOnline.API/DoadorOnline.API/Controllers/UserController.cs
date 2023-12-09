@@ -26,6 +26,13 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("{userId}")]
+    public async Task<IActionResult> GetUserAsync([FromRoute] string userId)
+    {
+        var user = await _donationQueries.GetUserDetails(userId);
+        return Ok(user);
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserCommand command)
     {
@@ -58,10 +65,43 @@ public class UserController : ControllerBase
         return Ok(jwt);
     }
 
+    [HttpPost("{userId}/donation")]
+    public async Task<IActionResult> AddDonation([FromBody] AddDonationCommand command, [FromRoute] string userId)
+    {
+        command.UserId = userId;
+        var message = await this._mediator.Send(command);
+        return Ok(message);
+    }
+
     [HttpGet("{userId}/donations")]
     public async Task<IActionResult> GetUserDonations([FromRoute] string userId)
     {
         var donations = await _donationQueries.GetUserDonations(userId);
         return Ok(donations);
     }
+
+    [HttpPut("{userId}/personal-data")]
+    public async Task<IActionResult> PutUserPersonalData([FromBody] UpdatePersonalDataCommand command, [FromRoute] string userId)
+    {
+        command.UserId = userId;
+        var message = await this._mediator.Send(command);
+        return Ok(message);
+    }
+
+    [HttpPut("{userId}/address")]
+    public async Task<IActionResult> PutUserAddress([FromRoute] string userId, [FromBody] UpdateAddressCommand command)
+    {
+        command.UserId = userId;
+        var result = await _mediator.Send(command);
+        return Ok(result);
+    }
+
+    [HttpPut("{userId}/donation-options")]
+    public async Task<IActionResult> PutUserDonationOptions([FromRoute] string userId, [FromBody] UpdateDonationOptionsCommand command)
+    {
+        command.UserId =userId;
+        var message = await this._mediator.Send(command);
+        return Ok(message);
+    }
+
 }

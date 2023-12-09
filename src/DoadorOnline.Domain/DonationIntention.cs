@@ -3,14 +3,14 @@ namespace DoadorOnline.Domain;
 
 public class DonationIntention : Entity
 {
-    public string DonatorId { get; set; }   
+    public string DonatorId { get; set; }
     public DonationType DonationType { get; set; }
 
     //EF Relationship
     /*public virtual Donator User { get; set; }*/
 
     //EF
-    public DonationIntention() {}
+    public DonationIntention() { }
     public DonationIntention(string donatorId,
                              DonationType donationType)
     {
@@ -21,10 +21,12 @@ public class DonationIntention : Entity
 
     public static class Factory
     {
-        public static DonationIntention NewDonationIntention(string donatorId,
-                                                             DonationType donationType)
-        {
-            return new(donatorId, donationType);
-        }
+        public static DonationIntention NewBloodDonationIntention(string donatorId)
+            => new(donatorId, DonationType.Blood);
+        public static DonationIntention NewBoneMarrowDonationIntention(string donatorId)
+           => new(donatorId, DonationType.BoneMarrow);
+        public static DonationIntention NewOrgansDonationIntention(string donatorId)
+          => new(donatorId, DonationType.Organs);
     }
+
 }

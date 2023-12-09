@@ -67,6 +67,39 @@ public class Donator : IdentityUser
         this.Addresses.Add(address);
     }
 
+    public void UpdateDonationsIntentions(List<DonationIntention> lstDonationsIntentions) 
+    {
+        this._donationIntentions.Clear();
+
+        foreach(var intention in lstDonationsIntentions)
+        {
+            _donationIntentions.Add(intention);
+        }
+    }
+
+    public void UpdateBloodInfo(BloodType bloodType, RHFactorType rHFactorType)
+    {
+        this.BloodType = bloodType;
+        this.RhesusFactor = rHFactorType;
+    }
+
+    public void UpdatePersonalData(string name,
+                                   DateTime birthDate,
+                                   GenderEnum gender,
+                                   string phoneNumber,
+                                   string email)
+    {
+        this.Name = name;
+        this.BirthDate = birthDate;
+        this.Gender = gender;
+        this.PhoneNumber = phoneNumber;
+        this.Email = email;
+    }
+
+    public void AddDonation(Donation donation)
+    {
+        this.Donations.Add(donation);
+    }
     public void CreateNewPassword(string password)
     {
         if (string.IsNullOrWhiteSpace(password))

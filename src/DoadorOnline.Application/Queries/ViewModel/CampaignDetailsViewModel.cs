@@ -10,12 +10,15 @@ public class CampaignDetailsViewModel
     public string BloodType { get; set; }
     public string RHFactorType { get; set; }
 
+    public string Base64Image { get; set; }
+
     public CampaignDetailsViewModel(string campaignId,
                                     string doneeName,
                                     int doneeAge,
                                     string donationPlace,
                                     string bloodType,
-                                    string rHFactorType)
+                                    string rHFactorType,
+                                    string base64Image)
     {
         CampaignId = campaignId;
         DoneeName = doneeName;
@@ -23,6 +26,7 @@ public class CampaignDetailsViewModel
         DonationPlace = donationPlace;
         BloodType = bloodType;
         RHFactorType = rHFactorType;
+        Base64Image = base64Image;
     }
 
 }

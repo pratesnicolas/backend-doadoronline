@@ -28,7 +28,11 @@ public class IdentityRepository : IIdentityRepository
 
     public async Task<Donator> GetUserById(string userId)
     {
-        var user = await _userManager.Users.SingleOrDefaultAsync(x => x.Id == userId);
+        var user = await _userManager.Users.Include(x => x.DonationIntentions) 
+                                           .Include(x => x.Addresses)
+                                           .Include(x => x.Donations)
+                                           .SingleOrDefaultAsync(x => x.Id == userId);
+
         return user;
     }
 
@@ -60,6 +64,10 @@ public class IdentityRepository : IIdentityRepository
 
     }
 
+    public async Task AddDonation(Donation donation)
+    {
+        await _context.Donations.AddAsync(donation);
+    }
     public async Task<List<Donation>> GetUserDonations(string userId) 
     {
         var donations = await _context.Donations.Where(x => x.DonatorId == userId).ToListAsync();
@@ -139,6 +147,11 @@ public class IdentityRepository : IIdentityRepository
         await _userManager.AddToRoleAsync(user, user.UserType.ToString());
     }
 
+    public async Task UpdateUser(Donator user)
+    {
+        await _userManager.UpdateAsync(user);
+    }
+
     public async Task AddDonationIntentions(List<DonationIntention> donationIntentions)
     {
         await _context.DonationIntentions.AddRangeAsync(donationIntentions);
@@ -151,6 +164,12 @@ public class IdentityRepository : IIdentityRepository
 
     public async Task AddAddress(Address address)
      => await _context.Addresses.AddAsync(address);
+
+   /* public Task UpdateAddress(Donator donator)
+    {
+        _context.Addresses.UpdateRange(addresses);
+        return Task.CompletedTask;
+    }*/
 
     public async Task SaveChanges()
     {

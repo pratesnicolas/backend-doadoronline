@@ -18,15 +18,13 @@ public class CreateCampaignCommandHandler : IRequestHandler<CreateCampaignComman
     {
         var campaignCreator = await _identityRepository.GetUserById(request.UserId) ?? throw new Exception("Usuário não encontrado.");
 
-        var base64Image = string.Empty;
-
         var newCampaign = Campaign.Factory.NewCampaign(campaignCreator.Id,                                                     
                                                        request.DoneeName, 
                                                        request.DonationPlace,
                                                        request.DoneeBloodType,
                                                        request.DoneeBirthDate,
                                                        request.DoneeRHFactor,
-                                                       base64Image);
+                                                       request.CampaignImage.ToBase64String());
 
         await _identityRepository.AddCampaign(newCampaign);
 

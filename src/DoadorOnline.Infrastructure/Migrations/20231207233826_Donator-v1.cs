@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DoadorOnline.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Identidade_v1 : Migration
+    public partial class Donatorv1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -90,6 +90,7 @@ namespace DoadorOnline.Infrastructure.Migrations
                     Street = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     District = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     Number = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    AddressLine2 = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     Country = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     City = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     State = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
@@ -238,11 +239,11 @@ namespace DoadorOnline.Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     DonatorId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    DonationPlace = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     DonationType = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IpAddress = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    PointsEarned = table.Column<int>(type: "int", nullable: false)
+                    PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    DonationPlace = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -259,10 +260,10 @@ namespace DoadorOnline.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "Administrator", "39f7ae5b-8fe1-423f-acd5-f56938acbfe2", "Administrator", "Administrator" },
-                    { "Donator", "4e4bcf12-eaf4-4e48-9e0e-367cbc03059d", "Donator", "Donator" },
-                    { "Donee", "55796912-43af-42a0-9db3-aca654aa42d1", "Donee", "Donee" },
-                    { "Hospital", "673cb7d2-61e8-49dc-9310-01f5cc5912ed", "Hospital", "Hospital" }
+                    { "Administrator", "b854e618-66be-4ce1-a594-a235a0f66776", "Administrator", "Administrator" },
+                    { "Donator", "3a51c27f-bbec-4ab9-87f4-d57850e17522", "Donator", "Donator" },
+                    { "Donee", "edaa5b86-f4e9-4961-a25c-92732c267cdf", "Donee", "Donee" },
+                    { "Hospital", "458a0cf5-604a-49b2-b9bb-653dcf0ea220", "Hospital", "Hospital" }
                 });
 
             migrationBuilder.CreateIndex(

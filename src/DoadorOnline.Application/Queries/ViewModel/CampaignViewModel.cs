@@ -1,6 +1,4 @@
-﻿using DoadorOnline.Domain;
-
-namespace DoadorOnline.Application;
+﻿namespace DoadorOnline.Application;
 
 public class CampaignViewModel
 {
@@ -9,17 +7,20 @@ public class CampaignViewModel
     public int DoneeAge { get; set; }
     public string BloodType { get; set; }
     public string RHFactorType { get; set; }
+    public string Base64Image { get; set; }
 
     public CampaignViewModel(string campaignId,
                              string doneeName,
                              int doneeAge,
                              string bloodType,
-                             string rHFactorType)
+                             string rHFactorType,
+                             string base64Image)
     {
         CampaignId = campaignId;
         DoneeName = doneeName;
         DoneeAge = doneeAge;
         BloodType = bloodType;
         RHFactorType = rHFactorType;
+        Base64Image = base64Image;
     }
 }

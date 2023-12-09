@@ -23,6 +23,7 @@ namespace DoadorOnline.API.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
+
         [HttpGet]
         public async Task<IActionResult> GetCampaignsAsync(string name,
                                                            BloodType? bloodtype,

@@ -28,6 +28,10 @@ namespace DoadorOnline.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<string>("AddressLine2")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<string>("City")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
@@ -290,28 +294,28 @@ namespace DoadorOnline.Infrastructure.Migrations
                         new
                         {
                             Id = "Administrator",
-                            ConcurrencyStamp = "39f7ae5b-8fe1-423f-acd5-f56938acbfe2",
+                            ConcurrencyStamp = "b854e618-66be-4ce1-a594-a235a0f66776",
                             Name = "Administrator",
                             NormalizedName = "Administrator"
                         },
                         new
                         {
                             Id = "Hospital",
-                            ConcurrencyStamp = "673cb7d2-61e8-49dc-9310-01f5cc5912ed",
+                            ConcurrencyStamp = "458a0cf5-604a-49b2-b9bb-653dcf0ea220",
                             Name = "Hospital",
                             NormalizedName = "Hospital"
                         },
                         new
                         {
                             Id = "Donee",
-                            ConcurrencyStamp = "55796912-43af-42a0-9db3-aca654aa42d1",
+                            ConcurrencyStamp = "edaa5b86-f4e9-4961-a25c-92732c267cdf",
                             Name = "Donee",
                             NormalizedName = "Donee"
                         },
                         new
                         {
                             Id = "Donator",
-                            ConcurrencyStamp = "4e4bcf12-eaf4-4e48-9e0e-367cbc03059d",
+                            ConcurrencyStamp = "3a51c27f-bbec-4ab9-87f4-d57850e17522",
                             Name = "Donator",
                             NormalizedName = "Donator"
                         });
@@ -468,11 +472,9 @@ namespace DoadorOnline.Infrastructure.Migrations
 
             modelBuilder.Entity("DoadorOnline.Domain.DonationIntention", b =>
                 {
-                    b.HasOne("DoadorOnline.Domain.Donator", "User")
+                    b.HasOne("DoadorOnline.Domain.Donator", null)
                         .WithMany("DonationIntentions")
                         .HasForeignKey("DonatorId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

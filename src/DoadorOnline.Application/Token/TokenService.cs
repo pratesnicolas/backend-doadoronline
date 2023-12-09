@@ -37,13 +37,14 @@ public class TokenService : ITokenService
     {
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Jti, user.Id),
-            new Claim(JwtRegisteredClaimNames.Sub, user.Name),
-            new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow)),
-            new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow), ClaimValueTypes.Integer64)
+            new(JwtRegisteredClaimNames.Jti, user.Id),
+            new(JwtRegisteredClaimNames.Sub, user.Name),
+            new("points",user.Points.ToString()),
+            new(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow)),
+            new(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow), ClaimValueTypes.Integer64)
         };
 
-        foreach (var userRole in roles)
+        foreach (var userRole in roles) 
             claims.Add(new Claim(ClaimTypes.Role, userRole));
 
         var identityClaims = new ClaimsIdentity();

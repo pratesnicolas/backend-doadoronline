@@ -20,7 +20,8 @@ public class DonationQueries : IDonationQueries
                                                           UserType.Donator);
 
 
-        var donatorsVM = donators.Select(x => new DonatorViewModel(x.Name,
+        var donatorsVM = donators.Select(x => new DonatorViewModel(x.Id,
+                                                                   x.Name,
                                                                    x.Cpf,
                                                                    x.BirthDate,
                                                                    $@"{Enum.GetName(x.BloodType)}{Enum.GetName(x.RhesusFactor)}",
@@ -54,7 +55,8 @@ public class DonationQueries : IDonationQueries
                                                                       x.DoneeName,
                                                                       DateTime.Today.Year - x.DoneeBirthDate.Year,
                                                                       Enum.GetName(x.DoneeBloodType),
-                                                                      Enum.GetName(x.DoneeRhFactor)));
+                                                                      Enum.GetName(x.DoneeRhFactor),
+                                                                      x.Base64Image));
         return campaignsVM;
 
     }
@@ -67,7 +69,8 @@ public class DonationQueries : IDonationQueries
                                                                       x.DoneeName,
                                                                       DateTime.Today.Year - x.DoneeBirthDate.Year,
                                                                       Enum.GetName(x.DoneeBloodType),
-                                                                      Enum.GetName(x.DoneeRhFactor)));
+                                                                      Enum.GetName(x.DoneeRhFactor),
+                                                                      x.Base64Image));
         return campaignsVM;
 
     }
@@ -81,9 +84,39 @@ public class DonationQueries : IDonationQueries
                                                        DateTime.Today.Year - campaign.DoneeBirthDate.Year,
                                                        campaign.DonationPlace,
                                                        Enum.GetName(campaign.DoneeBloodType),
-                                                       Enum.GetName(campaign.DoneeRhFactor));
+                                                       Enum.GetName(campaign.DoneeRhFactor),
+                                                       campaign.Base64Image);
         return campaignsVM;
 
+    }
+    public async Task <UserDetailsViewModel> GetUserDetails(string userId)
+    {
+        var user = await _identityRepository.GetUserById(userId);
+
+        var userDetailsVM = new UserDetailsViewModel(new PersonalDataViewModel(user.Name,
+                                                                               user.Cpf,
+                                                                               user.Email,
+                                                                               user.BirthDate,
+                                                                               user.Gender,
+                                                                               user.PhoneNumber),
+                                                     user.Addresses.Select(x => new AddressViewModel(x.ZipCode,
+                                                                                                     x.Street,
+                                                                                                     x.District,
+                                                                                                     x.City,
+                                                                                                     x.Number,
+                                                                                                     x.AddressLine2,
+                                                                                                     x.State)).ToList(),
+                                                     new DonationOptionsViewModel(user.DonationIntentions.Any(x => x.DonationType == DonationType.Organs),
+                                                                                  user.DonationIntentions.Any(x => x.DonationType == DonationType.Blood),
+                                                                                  user.BloodType,
+                                                                                  user.RhesusFactor,
+                                                                                  user.DonationIntentions.Any(x => x.DonationType == DonationType.BoneMarrow)),
+                                                     user.Donations.Select(x => new DonationViewModel(Enum.GetName(typeof(DonationType), x.DonationType),
+                                                                                                      x.DonationPlace,
+                                                                                                      x.DateCreated,
+                                                                                                      x.PointsEarned)).ToList());
+
+        return userDetailsVM;
     }
 }
 
