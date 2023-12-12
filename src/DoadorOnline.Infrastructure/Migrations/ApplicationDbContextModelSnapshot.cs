@@ -77,9 +77,8 @@ namespace DoadorOnline.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("Base64Image")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                    b.Property<byte[]>("CampaignImage")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("DonationPlace")
                         .HasMaxLength(100)
@@ -232,6 +231,9 @@ namespace DoadorOnline.Infrastructure.Migrations
                     b.Property<int>("Points")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("ProfileImage")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<int>("RhesusFactor")
                         .HasColumnType("int");
 
@@ -260,6 +262,34 @@ namespace DoadorOnline.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("DoadorOnline.Domain.PartnerSale", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("DonatorId")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SaleName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonatorId");
+
+                    b.ToTable("PartnerSales", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -294,30 +324,37 @@ namespace DoadorOnline.Infrastructure.Migrations
                         new
                         {
                             Id = "Administrator",
-                            ConcurrencyStamp = "b854e618-66be-4ce1-a594-a235a0f66776",
+                            ConcurrencyStamp = "f23ff1e4-cfb7-4a29-a917-8f121985cc2e",
                             Name = "Administrator",
                             NormalizedName = "Administrator"
                         },
                         new
                         {
                             Id = "Hospital",
-                            ConcurrencyStamp = "458a0cf5-604a-49b2-b9bb-653dcf0ea220",
+                            ConcurrencyStamp = "85466e90-164d-41e5-a9aa-bd0d7e3f8343",
                             Name = "Hospital",
                             NormalizedName = "Hospital"
                         },
                         new
                         {
                             Id = "Donee",
-                            ConcurrencyStamp = "edaa5b86-f4e9-4961-a25c-92732c267cdf",
+                            ConcurrencyStamp = "801d704e-d6e3-4452-937f-4e41a7d94c0a",
                             Name = "Donee",
                             NormalizedName = "Donee"
                         },
                         new
                         {
                             Id = "Donator",
-                            ConcurrencyStamp = "3a51c27f-bbec-4ab9-87f4-d57850e17522",
+                            ConcurrencyStamp = "33bd2861-d56c-4616-a3ef-aa0338872fe2",
                             Name = "Donator",
                             NormalizedName = "Donator"
+                        },
+                        new
+                        {
+                            Id = "Partner",
+                            ConcurrencyStamp = "4bda7bbc-a7de-4b9f-a26b-5082e905eea3",
+                            Name = "Partner",
+                            NormalizedName = "Partner"
                         });
                 });
 
@@ -477,6 +514,15 @@ namespace DoadorOnline.Infrastructure.Migrations
                         .HasForeignKey("DonatorId");
                 });
 
+            modelBuilder.Entity("DoadorOnline.Domain.PartnerSale", b =>
+                {
+                    b.HasOne("DoadorOnline.Domain.Donator", "User")
+                        .WithMany("PartnerSales")
+                        .HasForeignKey("DonatorId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -537,6 +583,8 @@ namespace DoadorOnline.Infrastructure.Migrations
                     b.Navigation("DonationIntentions");
 
                     b.Navigation("Donations");
+
+                    b.Navigation("PartnerSales");
                 });
 #pragma warning restore 612, 618
         }

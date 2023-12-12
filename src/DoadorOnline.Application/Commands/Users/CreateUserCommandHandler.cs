@@ -27,7 +27,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
                                            request.BirthDate,
                                            request.UserType,
                                            request.BloodType,
-                                           request.RhesusFactor);
+                                           request.RhesusFactor,
+                                           request.ProfileImage?.ToArrayBytes());
                                           
         user.CreateNewPassword(request.Password);
 

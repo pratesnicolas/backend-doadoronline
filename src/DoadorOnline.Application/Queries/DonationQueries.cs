@@ -24,7 +24,7 @@ public class DonationQueries : IDonationQueries
                                                                    x.Name,
                                                                    x.Cpf,
                                                                    x.BirthDate,
-                                                                   $@"{Enum.GetName(x.BloodType)}{Enum.GetName(x.RhesusFactor)}",
+                                                                   $@"{Enum.GetName(x.BloodType)} {x.RhesusFactor.ToDescriptionString()}",
                                                                    x.DonationIntentions.Any(x => x.DonationType == DonationType.Blood),
                                                                    x.DonationIntentions.Any(x => x.DonationType == DonationType.BoneMarrow),
                                                                    x.DonationIntentions.Any(x => x.DonationType == DonationType.Organs)));
@@ -35,16 +35,22 @@ public class DonationQueries : IDonationQueries
         return donatorsVM;
     }
 
-    public async Task<IEnumerable<DonationViewModel>> GetUserDonations(string userId)
+    public async Task<DonatorHistoryViewModel> GetUserDonations(string userId)
     {
         var donations = await _identityRepository.GetUserDonations(userId);
 
-        var donationsVM = donations.Select(x => new DonationViewModel(x.DonationType.ToString(),
+
+        var donationsVM = new DonatorHistoryViewModel()
+        {
+            Nome = donations.FirstOrDefault().User.Name,
+            Donations = donations.Select(x => new DonationViewModel(x.DonationType.ToString(),
                                                                       x.DonationPlace,
                                                                       x.DateCreated,
-                                                                      x.PointsEarned));
-        return donationsVM;
+                                                                      x.PointsEarned))
 
+        };
+
+        return donationsVM;
     }
 
     public async Task<IEnumerable<CampaignViewModel>> GetCampaigns(string name, BloodType? bloodtype, RHFactorType? rhFactor)
@@ -55,8 +61,8 @@ public class DonationQueries : IDonationQueries
                                                                       x.DoneeName,
                                                                       DateTime.Today.Year - x.DoneeBirthDate.Year,
                                                                       Enum.GetName(x.DoneeBloodType),
-                                                                      Enum.GetName(x.DoneeRhFactor),
-                                                                      x.Base64Image));
+                                                                      x.DoneeRhFactor.ToDescriptionString(),
+                                                                      x.CampaignImage.ToBase64String()));
         return campaignsVM;
 
     }
@@ -69,8 +75,8 @@ public class DonationQueries : IDonationQueries
                                                                       x.DoneeName,
                                                                       DateTime.Today.Year - x.DoneeBirthDate.Year,
                                                                       Enum.GetName(x.DoneeBloodType),
-                                                                      Enum.GetName(x.DoneeRhFactor),
-                                                                      x.Base64Image));
+                                                                      x.DoneeRhFactor.ToDescriptionString(),
+                                                                      x.CampaignImage.ToBase64String()));
         return campaignsVM;
 
     }
@@ -84,12 +90,12 @@ public class DonationQueries : IDonationQueries
                                                        DateTime.Today.Year - campaign.DoneeBirthDate.Year,
                                                        campaign.DonationPlace,
                                                        Enum.GetName(campaign.DoneeBloodType),
-                                                       Enum.GetName(campaign.DoneeRhFactor),
-                                                       campaign.Base64Image);
+                                                       campaign.DoneeRhFactor.ToDescriptionString(),
+                                                       campaign.CampaignImage.ToBase64String());
         return campaignsVM;
 
     }
-    public async Task <UserDetailsViewModel> GetUserDetails(string userId)
+    public async Task<UserDetailsViewModel> GetUserDetails(string userId)
     {
         var user = await _identityRepository.GetUserById(userId);
 
@@ -117,6 +123,12 @@ public class DonationQueries : IDonationQueries
                                                                                                       x.PointsEarned)).ToList());
 
         return userDetailsVM;
+    }
+
+    public async Task<int> GetUserPoints(string userId)
+    {
+        var user = await _identityRepository.GetUserById(userId);
+        return user.Points;
     }
 }
 

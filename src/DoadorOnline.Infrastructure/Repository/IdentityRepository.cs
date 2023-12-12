@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace DoadorOnline.Infrastructure;
 public class IdentityRepository : IIdentityRepository
 {
@@ -28,7 +29,7 @@ public class IdentityRepository : IIdentityRepository
 
     public async Task<Donator> GetUserById(string userId)
     {
-        var user = await _userManager.Users.Include(x => x.DonationIntentions) 
+        var user = await _userManager.Users.Include(x => x.DonationIntentions)
                                            .Include(x => x.Addresses)
                                            .Include(x => x.Donations)
                                            .SingleOrDefaultAsync(x => x.Id == userId);
@@ -41,7 +42,7 @@ public class IdentityRepository : IIdentityRepository
     {
         return await _userManager
             .Users
-            .SingleOrDefaultAsync(x => x.Cpf == cpf 
+            .SingleOrDefaultAsync(x => x.Cpf == cpf
                                        || x.Email == email);
     }
 
@@ -58,7 +59,7 @@ public class IdentityRepository : IIdentityRepository
                                                          && (donationType == null || x.DonationIntentions.Any(p => p.DonationType == donationType))
                                                          && (string.IsNullOrEmpty(name) || x.Name.Contains(name.Trim()))
                                                          && (userType == null || x.UserType == userType)).ToListAsync();
-                                                    
+
 
         return users;
 
@@ -68,9 +69,11 @@ public class IdentityRepository : IIdentityRepository
     {
         await _context.Donations.AddAsync(donation);
     }
-    public async Task<List<Donation>> GetUserDonations(string userId) 
+    public async Task<List<Donation>> GetUserDonations(string userId)
     {
-        var donations = await _context.Donations.Where(x => x.DonatorId == userId).ToListAsync();
+        var donations = await _context.Donations.Include(x => x.User)
+                                                .Where(x => x.DonatorId == userId)
+                                                .ToListAsync();
         return donations;
     }
 
@@ -78,13 +81,13 @@ public class IdentityRepository : IIdentityRepository
                                                    BloodType? bloodType,
                                                    RHFactorType? rhFactor)
     {
-        var campaigns = await _context.Campaigns.Where(x => (string.IsNullOrEmpty(name) || x.DoneeName.Contains(name)) 
-                                                       && (bloodType == null || x.DoneeBloodType == bloodType) 
+        var campaigns = await _context.Campaigns.Where(x => (string.IsNullOrEmpty(name) || x.DoneeName.Contains(name))
+                                                       && (bloodType == null || x.DoneeBloodType == bloodType)
                                                        && (rhFactor == null || x.DoneeRhFactor == rhFactor)).ToListAsync();
 
         return campaigns;
     }
-    
+
     public async Task<List<Campaign>> GetCarouselCampaigns()
     {
         var campaigns = await _context
@@ -96,6 +99,18 @@ public class IdentityRepository : IIdentityRepository
         return campaigns;
     }
 
+    public async Task<List<PartnerSale>> GetCarouselSales()
+    {
+        var sales = await _context
+            .PartnerSales
+            .Include(x => x.User)
+            .Take(12)
+            .ToListAsync();
+
+        return sales;
+            
+    }
+
     public async Task<Campaign> GetCampaignById(string campaignId)
     => await _context.Campaigns.FirstOrDefaultAsync(x => x.Id == campaignId);
 
@@ -105,12 +120,12 @@ public class IdentityRepository : IIdentityRepository
         return user;
     }
 
-    public async Task<IList<string>> GetUserRoles(Donator user)    
-      =>  await _userManager.GetRolesAsync(user);
+    public async Task<IList<string>> GetUserRoles(Donator user)
+      => await _userManager.GetRolesAsync(user);
 
     public async Task<ValidationResult> SignInAsync(Donator user, string password)
     {
-        var sign =  await this._signInManager.PasswordSignInAsync(user,
+        var sign = await this._signInManager.PasswordSignInAsync(user,
                                                              password,
                                                              true,
                                                              true);
@@ -165,11 +180,21 @@ public class IdentityRepository : IIdentityRepository
     public async Task AddAddress(Address address)
      => await _context.Addresses.AddAsync(address);
 
-   /* public Task UpdateAddress(Donator donator)
-    {
-        _context.Addresses.UpdateRange(addresses);
+    public async Task<List<PartnerSale>> GetSales()
+       => await _context.PartnerSales.Include(x => x.User).ToListAsync();
+
+    public Task DeleteSale(PartnerSale sale)
+    {   
+        _context.PartnerSales.Remove(sale);
         return Task.CompletedTask;
-    }*/
+    }
+
+    public async Task<PartnerSale> GetSaleById(string saleId)
+    {
+        return await _context.PartnerSales
+                             .Include(x => x.User)
+                             .FirstOrDefaultAsync(x => x.Id == saleId);
+    }
 
     public async Task SaveChanges()
     {

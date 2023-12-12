@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DoadorOnline.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Donatorv1 : Migration
+    public partial class DoadorOnlinev1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,6 +40,7 @@ namespace DoadorOnline.Infrastructure.Migrations
                     UserType = table.Column<int>(type: "int", nullable: false),
                     Points = table.Column<int>(type: "int", nullable: false),
                     Cpf = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    ProfileImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
@@ -203,7 +204,7 @@ namespace DoadorOnline.Infrastructure.Migrations
                     DoneeBloodType = table.Column<int>(type: "int", nullable: false),
                     DoneeRhFactor = table.Column<int>(type: "int", nullable: false),
                     DoneeBirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Base64Image = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                    CampaignImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -255,15 +256,36 @@ namespace DoadorOnline.Infrastructure.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PartnerSales",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    DonatorId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    SaleName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    Description = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    Points = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PartnerSales", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PartnerSales_AspNetUsers_DonatorId",
+                        column: x => x.DonatorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "Administrator", "b854e618-66be-4ce1-a594-a235a0f66776", "Administrator", "Administrator" },
-                    { "Donator", "3a51c27f-bbec-4ab9-87f4-d57850e17522", "Donator", "Donator" },
-                    { "Donee", "edaa5b86-f4e9-4961-a25c-92732c267cdf", "Donee", "Donee" },
-                    { "Hospital", "458a0cf5-604a-49b2-b9bb-653dcf0ea220", "Hospital", "Hospital" }
+                    { "Administrator", "f23ff1e4-cfb7-4a29-a917-8f121985cc2e", "Administrator", "Administrator" },
+                    { "Donator", "33bd2861-d56c-4616-a3ef-aa0338872fe2", "Donator", "Donator" },
+                    { "Donee", "801d704e-d6e3-4452-937f-4e41a7d94c0a", "Donee", "Donee" },
+                    { "Hospital", "85466e90-164d-41e5-a9aa-bd0d7e3f8343", "Hospital", "Hospital" },
+                    { "Partner", "4bda7bbc-a7de-4b9f-a26b-5082e905eea3", "Partner", "Partner" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -324,6 +346,11 @@ namespace DoadorOnline.Infrastructure.Migrations
                 name: "IX_Donations_DonatorId",
                 table: "Donations",
                 column: "DonatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartnerSales_DonatorId",
+                table: "PartnerSales",
+                column: "DonatorId");
         }
 
         /// <inheritdoc />
@@ -355,6 +382,9 @@ namespace DoadorOnline.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Donations");
+
+            migrationBuilder.DropTable(
+                name: "PartnerSales");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

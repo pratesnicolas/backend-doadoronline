@@ -24,6 +24,7 @@ public interface IIdentityRepository
                                       BloodType? bloodType,
                                       RHFactorType? rhFactor);
     Task<List<Campaign>> GetCarouselCampaigns();
+    Task<List<PartnerSale>> GetCarouselSales();
     Task<ValidationResult> SignInAsync(Donator user, string password);
 
     Task ResetPassword(Donator user,
@@ -33,8 +34,9 @@ public interface IIdentityRepository
 
     Task AddDonationIntentions(List<DonationIntention> donationIntentions);
     Task AddAddress(Address address);
-
+    Task<List<PartnerSale>> GetSales();
     Task AddCampaign(Campaign campaign);
-
+    Task<PartnerSale> GetSaleById(string saleId);
+    Task DeleteSale(PartnerSale sale);
     Task SaveChanges();
 }

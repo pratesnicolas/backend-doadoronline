@@ -24,7 +24,7 @@ public class CreateCampaignCommandHandler : IRequestHandler<CreateCampaignComman
                                                        request.DoneeBloodType,
                                                        request.DoneeBirthDate,
                                                        request.DoneeRHFactor,
-                                                       request.CampaignImage.ToBase64String());
+                                                       request.CampaignImage.ToArrayBytes());
 
         await _identityRepository.AddCampaign(newCampaign);
 
