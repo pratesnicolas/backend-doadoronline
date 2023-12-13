@@ -18,6 +18,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IDonationQueries, DonationQueries>();
         services.AddScoped<ISalesQueries, SalesQueries>();
+        services.AddScoped<IUserService, UserService>();
 
 
         services.AddDefaultIdentity<Donator>()

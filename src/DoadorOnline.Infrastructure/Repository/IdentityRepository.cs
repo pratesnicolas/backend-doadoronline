@@ -183,6 +183,9 @@ public class IdentityRepository : IIdentityRepository
     public async Task<List<PartnerSale>> GetSales()
        => await _context.PartnerSales.Include(x => x.User).ToListAsync();
 
+    public async Task AddSale(PartnerSale sale)
+      => await _context.PartnerSales.AddAsync(sale);
+
     public Task DeleteSale(PartnerSale sale)
     {   
         _context.PartnerSales.Remove(sale);

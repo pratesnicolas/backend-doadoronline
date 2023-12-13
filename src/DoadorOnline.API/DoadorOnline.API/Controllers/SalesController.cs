@@ -16,12 +16,18 @@ public class SalesController : Controller
         _mediator = mediator;
     }
 
-    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAllSales()
     {
         var sales = await _salesQueries.GetSales();
         return Ok(sales);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> PostSaleAsync([FromBody] CreateSaleCommand command)
+    {
+        var request = await _mediator.Send(command);
+        return Ok(request);
     }
 
     [HttpPost("{saleId}/use-points")]

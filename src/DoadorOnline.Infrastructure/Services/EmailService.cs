@@ -12,9 +12,12 @@ public class EmailService : IEmailService
         var email = new MimeMessage();
         email.From.Add(MailboxAddress.Parse("contatodoadoroline@gmail.com"));
         email.To.Add(MailboxAddress.Parse(to));
-        email.Subject = subject;
-        email.Body = new TextPart(TextFormat.Html) { Text = GetBodyEmailHtml(subject, to, body) };
 
+        BodyBuilder bodyBuilder = new();
+        bodyBuilder.HtmlBody = GetBodyEmailHtml(subject, to, body);
+        email.Subject = subject;
+        email.Body = bodyBuilder.ToMessageBody();
+        
         using var smtp = new SmtpClient();
         smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
         smtp.Authenticate("contatodoadoronline@gmail.com", "pwop lyee gqsd mimw");

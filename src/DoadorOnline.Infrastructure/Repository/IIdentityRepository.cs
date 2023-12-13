@@ -35,6 +35,7 @@ public interface IIdentityRepository
     Task AddDonationIntentions(List<DonationIntention> donationIntentions);
     Task AddAddress(Address address);
     Task<List<PartnerSale>> GetSales();
+    Task AddSale(PartnerSale sale);
     Task AddCampaign(Campaign campaign);
     Task<PartnerSale> GetSaleById(string saleId);
     Task DeleteSale(PartnerSale sale);
