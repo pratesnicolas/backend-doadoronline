@@ -52,9 +52,7 @@ public class ExceptionMiddleware
         {
             this._logger.LogError(ex, ex.Message);
 
-            var response = this._hostEnvironment.IsProduction()
-                ? "Sistema momentaneamente indisponível. Por favor, tente novamente dentro de alguns instantes."
-                : ex.Message;
+            var response = ex.Message;
 
             await this.HandleExceptionAsync(
                 httpContext,
