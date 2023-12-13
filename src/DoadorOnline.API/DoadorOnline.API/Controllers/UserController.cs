@@ -33,8 +33,16 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
+    [HttpGet("{userId}/points")]
+    public async Task<IActionResult> GetUserPointsAsync([FromRoute] string userId)
+    {
+        var userPoints = await _donationQueries.GetUserPoints(userId);
+        return Ok(userPoints);
+    }
+
+
     [HttpPost]
-    public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserCommand command)
+    public async Task<IActionResult> CreateUserAsync([FromForm] CreateUserCommand command)
     {
         await this._mediator.Send(command);
         return Ok();
@@ -100,6 +108,13 @@ public class UserController : ControllerBase
     public async Task<IActionResult> PutUserDonationOptions([FromRoute] string userId, [FromBody] UpdateDonationOptionsCommand command)
     {
         command.UserId =userId;
+        var message = await this._mediator.Send(command);
+        return Ok(message);
+    }
+
+    [HttpPost("contact-us")]
+    public async Task<IActionResult> PostContactUs([FromBody] ContactUsCommand command)
+    {
         var message = await this._mediator.Send(command);
         return Ok(message);
     }

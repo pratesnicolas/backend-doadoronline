@@ -42,11 +42,19 @@ public class IdentityRolesMapping : IEntityTypeConfiguration<IdentityRole>
             Id = CustomRoleTypes.Donee
         };
 
+        var rolePartner = new IdentityRole
+        {
+            Name = CustomRoleTypes.Partner,
+            NormalizedName = CustomRoleTypes.Partner,
+            ConcurrencyStamp = Guid.NewGuid().ToString(),
+            Id = CustomRoleTypes.Partner
+        };
 
         builder.HasData(roleAdministrator,
                         roleHospital,
                         roleDonee,
-                        roleDonator);
+                        roleDonator,
+                        rolePartner);
     }
 }
 

@@ -24,6 +24,10 @@ public class DonatorMapping : IEntityTypeConfiguration<Donator>
                .WithOne(x => x.User)
                .HasForeignKey(x => x.DonatorId);
 
+        builder.HasMany(x => x.PartnerSales)
+               .WithOne(x => x.User)
+               .HasForeignKey(x => x.DonatorId);
+
         builder.HasKey(x => x.Id);
     }
 }

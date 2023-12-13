@@ -27,7 +27,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
                                            request.BirthDate,
                                            request.UserType,
                                            request.BloodType,
-                                           request.RhesusFactor);
+                                           request.RhesusFactor,
+                                           request.ProfileImage?.ToArrayBytes());
                                           
         user.CreateNewPassword(request.Password);
 
@@ -64,7 +65,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Valid
         await _identityRepository.AddAddress(newAddress);
 
         _emailService.SendEmail("Bem-vindo(a) ao Doador Online",
-                                $@"Olá {user.Name}, <br><br>Você foi registrado com sucesso na nossa plataforma.",
+                                $@"<br><br>Você foi registrado com sucesso na nossa plataforma.",
                                 request.Email);
 
         await _identityRepository.SaveChanges();

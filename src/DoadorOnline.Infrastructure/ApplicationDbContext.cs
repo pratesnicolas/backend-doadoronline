@@ -13,6 +13,7 @@ public sealed class ApplicationDbContext : IdentityDbContext<Donator>
     public DbSet<Address> Addresses { get; set; }
     public DbSet<DonationIntention> DonationIntentions { get;set; }
     public DbSet<Campaign> Campaigns { get; set; }
+    public DbSet<PartnerSale>  PartnerSales { get; set; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
        : base(options)
     {

@@ -1,6 +1,7 @@
 ﻿using DoadorOnline.Domain;
 using FluentValidation.Results;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System.Text.Json.Serialization;
 
 namespace DoadorOnline.Application;
@@ -21,6 +22,8 @@ public class CreateUserCommand : IRequest<ValidationResult>
     public RHFactorType RhesusFactor { get; set; }
 
     public AddressDTO Address { get; set; }
+
+    public IFormFile ProfileImage { get; set; }
 
     [JsonIgnore]
     public ValidationResult ValidationResult { get; set; }

@@ -11,7 +11,7 @@ public class Campaign : Entity
     public BloodType DoneeBloodType { get; set; }
     public RHFactorType DoneeRhFactor { get; set; }
     public DateTime DoneeBirthDate { get; set; }
-    public string Base64Image { get; set; }
+    public byte[] CampaignImage { get; set; }
 
     public Campaign() { }
     public Campaign(string donatorId,
@@ -20,7 +20,7 @@ public class Campaign : Entity
                     BloodType doneeBloodType,
                     DateTime doneeBirthDate,
                     RHFactorType doneeFactorType,
-                    string base64Image)
+                    byte[] campaignImage)
     {
         base.Id = Guid.NewGuid().ToString();
         DonatorId = donatorId;
@@ -30,7 +30,7 @@ public class Campaign : Entity
         DoneeBirthDate = doneeBirthDate;
         DoneeRhFactor = doneeFactorType;
         ExpirationDate = DateTime.Now.AddDays(15);
-        Base64Image = base64Image;
+        CampaignImage = campaignImage;
     }
 
     public static class Factory
@@ -41,7 +41,7 @@ public class Campaign : Entity
                                            BloodType doneeBloodType,
                                            DateTime doneeBirthDate,
                                            RHFactorType doneeRHFactor,
-                                           string base64image)
+                                           byte[] campaignImage)
         {
             return new(donatorId,
                        doneeName,
@@ -49,7 +49,7 @@ public class Campaign : Entity
                        doneeBloodType,
                        doneeBirthDate,
                        doneeRHFactor,
-                       base64image);
+                       campaignImage);
         }
     }
 }

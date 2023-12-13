@@ -4,16 +4,15 @@ namespace DoadorOnline.Application;
 
 public static class IFormFileExtensions
 {
-    public static string ToBase64String(this IFormFile formFile)
+    public static byte[] ToArrayBytes(this IFormFile formFile)
     {
-        if (formFile == null)
-            return string.Empty;
+        if (formFile is null)
+            return null;
 
         using var ms = new MemoryStream();
         formFile.CopyTo(ms);
         var fileBytes = ms.ToArray();
-        string base64 = Convert.ToBase64String(fileBytes);
-        return base64;
+        return fileBytes;
     }
 
 }

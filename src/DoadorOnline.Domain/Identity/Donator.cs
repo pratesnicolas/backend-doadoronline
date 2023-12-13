@@ -13,8 +13,10 @@ public class Donator : IdentityUser
     public RHFactorType RhesusFactor { get; private set; }
 
     public UserType UserType { get; private set; }
-    public int Points { get; private set; }
+    public int Points { get; private set; } 
     public string Cpf { get; private set; }
+
+    public byte[] ProfileImage { get; private set; }
 
     #region EF Relationships
 
@@ -26,6 +28,8 @@ public class Donator : IdentityUser
     public ICollection<DonationIntention> DonationIntentions => this._donationIntentions;
     private readonly List<DonationIntention> _donationIntentions = new();
 
+    public ICollection<PartnerSale> PartnerSales => this._partnerSales;
+    private readonly List<PartnerSale> _partnerSales = new();
     public ICollection<Campaign> Campaigns => this._campaigns;
     private readonly List<Campaign> _campaigns = new();
 
@@ -40,7 +44,8 @@ public class Donator : IdentityUser
                    DateTime birthDate,
                    UserType userType,
                    BloodType bloodType,
-                   RHFactorType rhesusFactorType)
+                   RHFactorType rhesusFactorType,
+                   byte[] profileImage)
 
     {
         base.Id = Guid.NewGuid().ToString();
@@ -58,6 +63,7 @@ public class Donator : IdentityUser
         BloodType = bloodType;
         UserType = userType;
         RhesusFactor = rhesusFactorType;
+        ProfileImage = profileImage;
     }
 
     public void AddError(string erro)
@@ -99,6 +105,15 @@ public class Donator : IdentityUser
     public void AddDonation(Donation donation)
     {
         this.Donations.Add(donation);
+        this.Points += donation.PointsEarned;
+    }
+
+    public void UsePoints(int points)
+    {
+        if (points > this.Points)
+            throw new Exception("Usuário não tem pontos suficiente para usar nesta promoção.");
+
+        this.Points -= points;
     }
     public void CreateNewPassword(string password)
     {
@@ -122,7 +137,8 @@ public class Donator : IdentityUser
                                       DateTime birthDate,
                                       UserType userType,
                                       BloodType bloodType,
-                                      RHFactorType rhesusFactorType)
+                                      RHFactorType rhesusFactorType,
+                                      byte[] profileImage)
 
 
         {
@@ -134,7 +150,8 @@ public class Donator : IdentityUser
                        birthDate,
                        userType,
                        bloodType,
-                       rhesusFactorType);
+                       rhesusFactorType,
+                       profileImage);
 
         }
     }

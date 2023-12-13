@@ -7,7 +7,7 @@ namespace DoadorOnline.Application;
 
 public class AddDonationCommandHandler : IRequestHandler<AddDonationCommand, ValidationResult>
 {
-    private IIdentityRepository _identityRepository;
+    private readonly IIdentityRepository _identityRepository;
 
     public AddDonationCommandHandler(IIdentityRepository identityRepository)
     {
@@ -27,10 +27,10 @@ public class AddDonationCommandHandler : IRequestHandler<AddDonationCommand, Val
                                                     150,
                                                     request.DonationPlace);
 
+
         user.AddDonation(donation);
 
-        await _identityRepository.AddDonation(donation);
-
+        await _identityRepository.UpdateUser(user);
         await _identityRepository.SaveChanges();
 
         return request.ValidationResult;
