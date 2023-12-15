@@ -42,7 +42,7 @@ public class DonationQueries : IDonationQueries
 
         var donationsVM = new DonatorHistoryViewModel()
         {
-            Nome = donations.FirstOrDefault().User.Name,
+            Nome = donations.FirstOrDefault()?.User.Name,
             Donations = donations.Select(x => new DonationViewModel(x.DonationType.ToString(),
                                                                       x.DonationPlace,
                                                                       x.DateCreated,
