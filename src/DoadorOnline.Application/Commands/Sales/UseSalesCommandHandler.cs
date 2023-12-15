@@ -33,7 +33,7 @@ public class UseSalesCommandHandler : IRequestHandler<UseSalesPointsCommand, Val
         ;
 
         _emailService.SendEmail("Uso de Pontos",
-                                $@"<br><br>Você usou {sale.Points} no parceiro {sale.SaleName}, seu codigo de uso é {new Random().Next(100000, 999999)} .",
+                                $@"<br><br>Você usou {sale.Points} pontos no parceiro {sale.SaleName}, seu codigo de uso é {new Random().Next(100000, 999999)} .",
                                 user.Email);
 
         await _identityRepository.SaveChanges();
