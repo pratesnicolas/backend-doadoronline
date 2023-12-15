@@ -43,7 +43,7 @@ public class DonationQueries : IDonationQueries
         var donationsVM = new DonatorHistoryViewModel()
         {
             Nome = donations.FirstOrDefault()?.User.Name,
-            Donations = donations.Select(x => new DonationViewModel(x.DonationType.ToString(),
+            Donations = donations.Select(x => new DonationViewModel(x.DonationType.GetDisplayName(),
                                                                       x.DonationPlace,
                                                                       x.DateCreated,
                                                                       x.PointsEarned))
@@ -117,7 +117,7 @@ public class DonationQueries : IDonationQueries
                                                                                   user.BloodType,
                                                                                   user.RhesusFactor,
                                                                                   user.DonationIntentions.Any(x => x.DonationType == DonationType.BoneMarrow)),
-                                                     user.Donations.Select(x => new DonationViewModel(Enum.GetName(typeof(DonationType), x.DonationType),
+                                                     user.Donations.Select(x => new DonationViewModel(x.DonationType.GetDisplayName(),
                                                                                                       x.DonationPlace,
                                                                                                       x.DateCreated,
                                                                                                       x.PointsEarned)).ToList());

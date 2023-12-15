@@ -7,9 +7,11 @@ namespace DoadorOnline.Application;
 public class UseSalesCommandHandler : IRequestHandler<UseSalesPointsCommand, ValidationResult>
 {
     private readonly IIdentityRepository _identityRepository;
-    public UseSalesCommandHandler(IIdentityRepository identityRepository)
+    private readonly IEmailService _emailService;
+    public UseSalesCommandHandler(IIdentityRepository identityRepository, IEmailService emailService)
     {
         this._identityRepository = identityRepository;
+        this._emailService = emailService;
     }
 
     public async Task<ValidationResult> Handle(UseSalesPointsCommand request, CancellationToken cancellationToken)
@@ -27,6 +29,13 @@ public class UseSalesCommandHandler : IRequestHandler<UseSalesPointsCommand, Val
         user.UsePoints(sale.Points);
 
         await _identityRepository.UpdateUser(user);
+
+        ;
+
+        _emailService.SendEmail("Uso de Pontos",
+                                $@"<br><br>Você usou {sale.Points} no parceiro {sale.SaleName}, seu codigo de uso é {new Random().Next(100000, 999999)} .",
+                                user.Email);
+
         await _identityRepository.SaveChanges();
 
         return request.ValidationResult;
